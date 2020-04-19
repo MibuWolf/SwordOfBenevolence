@@ -1,0 +1,13 @@
+{
+	"FileVersion": 3,
+	"EngineAssociation": "{44FE768C-4FB5-D5CA-F8A7-64A9D2CC0F4B}",
+	"Category": "",
+	"Description": "",
+	"Modules": [
+		{
+			"Name": "SwordOfBenevolence",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		}
+	]
+}
