@@ -7,6 +7,7 @@
 #include "AbilitySystemInterface.h"
 #include "../Ability/Attribute/ObjectAttribute.h"
 #include "../Ability/GameAbilitySystemComponent.h"
+#include "../GameItem/GameEquip.h"
 #include "GameObject.generated.h"
 
 UCLASS()
@@ -81,8 +82,12 @@ protected:
 	UGameAbilitySystemComponent* AbilitySystemComponent;
 
 	/**属性*/
-	UPROPERTY(VisibleAnyWhere)
+	UPROPERTY(EditAnywhere)
 	UObjectAttribute*	Attribute;
+
+	// 装备列表
+	UPROPERTY(EditAnywhere)
+	TMap<EEquipType, TSubclassOf<AGameEquip>> Equips;
 
 protected:
 

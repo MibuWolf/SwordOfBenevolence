@@ -35,6 +35,16 @@ void AGameObject::BeginPlay()
 		tagContainer.AddTag(FGameplayTag::RequestGameplayTag(FName(*SkillTag)));
 		EventHandle = AbilitySystemComponent->RegisterGameplayTagEvent(FGameplayTag::RequestGameplayTag(FName(*SkillTag))).AddUObject(this, &AGameObject::OnGameplayTagCallback);*/
 	}
+
+	// °ó¶¨×°±¸
+	for (const TPair<EEquipType, TSubclassOf<AGameEquip>>& Pair : Equips)
+	{
+		AGameEquip* pEquip = Cast<AGameEquip>(Pair.Value.GetDefaultObject());
+		if (pEquip != nullptr)
+		{
+			pEquip->BindGameObject(this);
+		}
+	}
 }
 
 void AGameObject::EndPlay(const EEndPlayReason::Type EndPlayReason)
