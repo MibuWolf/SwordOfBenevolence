@@ -30,10 +30,10 @@ void AGameObject::BeginPlay()
 	{
 		AbilitySystemComponent->AutoGiveAbilites();
 	
-		FString SkillTag = TEXT("Ability.Skill.Attacked.Normal");
+		/*FString SkillTag = TEXT("Ability.Skill.Attacked.Normal");
 		FGameplayTagContainer tagContainer;
 		tagContainer.AddTag(FGameplayTag::RequestGameplayTag(FName(*SkillTag)));
-		EventHandle = AbilitySystemComponent->RegisterGameplayTagEvent(FGameplayTag::RequestGameplayTag(FName(*SkillTag))).AddUObject(this, &AGameObject::OnGameplayTagCallback);
+		EventHandle = AbilitySystemComponent->RegisterGameplayTagEvent(FGameplayTag::RequestGameplayTag(FName(*SkillTag))).AddUObject(this, &AGameObject::OnGameplayTagCallback);*/
 	}
 }
 
@@ -41,8 +41,8 @@ void AGameObject::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	if (AbilitySystemComponent && EventHandle.IsValid())
 	{
-		FString SkillTag = TEXT("Ability.Skill.Attacked.Normal");
-		AbilitySystemComponent->UnregisterGameplayTagEvent(EventHandle, FGameplayTag::RequestGameplayTag(FName(*SkillTag)));
+		/*FString SkillTag = TEXT("Ability.Skill.Attacked.Normal");
+		AbilitySystemComponent->UnregisterGameplayTagEvent(EventHandle, FGameplayTag::RequestGameplayTag(FName(*SkillTag)));*/
 	}
 }
 

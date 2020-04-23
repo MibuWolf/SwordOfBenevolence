@@ -5,7 +5,7 @@
 #include "../GameObject/GamePlayer.h"
 
 AGamePlayerController::AGamePlayerController(const FObjectInitializer& ObjectInitializer)
-	: Super(ObjectInitializer), bActionMode(true)
+	: Super(ObjectInitializer), bActionMode(false)
 {
 	bShowMouseCursor = true;
 	DefaultMouseCursor = EMouseCursor::None;
@@ -28,7 +28,7 @@ void AGamePlayerController::SetActionOperationMode(bool isActionMode)
 		player->bUseControllerRotationYaw = true;
 		player->bUseControllerRotationPitch = false;
 		player->bUseControllerRotationRoll = false;
-		InputYawScale = 2.5f;
+		InputYawScale = 5.0f;
 	}
 	else
 	{
@@ -36,7 +36,7 @@ void AGamePlayerController::SetActionOperationMode(bool isActionMode)
 		player->bUseControllerRotationYaw = false;
 		player->bUseControllerRotationPitch = false;
 		player->bUseControllerRotationRoll = false;
-		InputYawScale = 2.5f;
+		InputYawScale = 5.0f;
 	}
 }
 
@@ -150,17 +150,31 @@ void AGamePlayerController::OnMoveRightEvent(float Value)
 			return;
 
 		player->SetDirctionX(Value);
-
+		FVector keyDir = player->GetDirction();
 		if (Value != 0)
 		{
-			// 从当前控制器获取相机朝向角度
-			const FRotator Rotation = player->GetActorRotation();
-			// 在XZ平面方向
-			const FRotator YawRotation(0, Rotation.Yaw, 0);
+			if (bActionMode)
+			{
+				// 从当前控制器获取相机朝向角度
+				const FRotator Rotation = player->GetActorRotation();
+				// 在XZ平面方向
+				const FRotator YawRotation(0, Rotation.Yaw, 0);
 
-			// 设置向相机前方移动
-			const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
-			player->AddMovementInput(Direction, Value);
+				// 设置向相机前方移动
+				const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
+				player->AddMovementInput(Direction, Value);
+			}
+			else
+			{
+				FRotator yaw = player->GetActorRotation();
+
+				if (keyDir.Y < 0.0f)
+					yaw.Yaw -= Value;
+				else
+					yaw.Yaw += Value;
+
+				player->SetActorRotation(yaw);
+			}
 		}
 	}
 }

@@ -49,9 +49,9 @@ void UGameSkill::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGame
 	if (IsPlaying)
 		StopMontage();
 
-	FString ComboTag = FString::Printf(TEXT("Ability.Skill.Combo.%d"), InputID);
+	//FString ComboTag = FString::Printf(TEXT("Ability.Skill.Combo.%d"), InputID);
 	FGameplayTagContainer tagContainer;
-	tagContainer.AddTag(FGameplayTag::RequestGameplayTag(FName(*ComboTag)));
+	//tagContainer.AddTag(FGameplayTag::RequestGameplayTag(FName(*ComboTag)));
 
 	UAbilitySystemComponent* AbilitySystemComponent = GetAbilitySystemComponentFromActorInfo();
 	if (AbilitySystemComponent && AbilitySystemComponent->HasAnyMatchingGameplayTags(tagContainer))

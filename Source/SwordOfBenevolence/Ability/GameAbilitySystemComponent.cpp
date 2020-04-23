@@ -26,9 +26,9 @@ void UGameAbilitySystemComponent::AbilityLocalInputPressed(int32 InputID)
 	if (!AbilityComboCount.Contains(EAbilityInputID(InputID)))
 		AbilityComboCount.Add(EAbilityInputID(InputID), 0);
 
-	FString ComboTag = FString::Printf(TEXT("Ability.Skill.Combo.%d"), InputID);
+	//FString ComboTag = FString::Printf(TEXT("Ability.Skill.Combo.%d"), InputID);
 	FGameplayTagContainer tagContainer;
-	tagContainer.AddTag(FGameplayTag::RequestGameplayTag(FName(*ComboTag)));
+	//tagContainer.AddTag(FGameplayTag::RequestGameplayTag(FName(*ComboTag)));
 	bool bCombo = false;
 	if (HasAnyMatchingGameplayTags(tagContainer))
 	{

@@ -53,7 +53,7 @@ void AGamePlayer::BeginPlay()
 
 	if (playerController != nullptr)
 	{
-		playerController->SetActionOperationMode(true);
+		playerController->SetActionOperationMode(false);
 	}
 }
 
