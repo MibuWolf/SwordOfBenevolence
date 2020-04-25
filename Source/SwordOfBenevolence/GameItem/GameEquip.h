@@ -43,17 +43,18 @@ public:
 
 public:
 
-	// 绑定到目标
+	// 获取装备类型
 	UFUNCTION(BlueprintCallable, Category = Equip)
-	void					BindGameObject(AGameObject* ownerObject);
-
-	// 从目标解除绑定
+	EEquipType					GetEquipType();
+	// 获取装备槽名称
 	UFUNCTION(BlueprintCallable, Category = Equip)
-	void					UnbindGameObject();
-
+	FName						GetSocketName();
+	// 获取绑定规则
+	FAttachmentTransformRules	GetAttachmentRules();
 	// 获取装备属性
 	UFUNCTION(BlueprintCallable, Category = Equip)
-	UObjectAttribute*		GetAttribute();
+	UObjectAttribute*			GetAttribute();
+
 
 protected:
 
@@ -63,7 +64,7 @@ protected:
 protected:
 
 	UPROPERTY(EditAnywhere, Category = Equip)
-	FName		SocketName;				// 装备绑定骨骼
+	EEquipType		EquipType;			// 装备类型
 
 	UPROPERTY(EditAnywhere, Category = Equip)
 	EAttachmentRule LocationRule;		// 位置规则
@@ -80,10 +81,5 @@ protected:
 	/**属性*/
 	UPROPERTY(EditAnywhere)
 	UObjectAttribute*	Attribute;
-
-
-private:
-
-	AGameObject*			Owner;
 
 };

@@ -36,13 +36,17 @@ void AGameObject::BeginPlay()
 		EventHandle = AbilitySystemComponent->RegisterGameplayTagEvent(FGameplayTag::RequestGameplayTag(FName(*SkillTag))).AddUObject(this, &AGameObject::OnGameplayTagCallback);*/
 	}
 
+	UWorld* const pWorld = GetWorld(); // get a reference to the world 
 	// 绑定装备
-	for (const TPair<EEquipType, TSubclassOf<AGameEquip>>& Pair : Equips)
+	for (const TPair<EEquipType, TSubclassOf<AGameEquip>>& Pair : EquipTypes)
 	{
-		AGameEquip* pEquip = Cast<AGameEquip>(Pair.Value.GetDefaultObject());
+		FActorSpawnParameters SpawnParams;
+		SpawnParams.bDeferConstruction = 1;  // 设置异步的原因是在场景激活时BeginPlay创建新的Actor同步会导致两次激活（同步加载完成激活一次同步加载完后将该Actor加到场景，场景所有对象激活循环又会激活一次）
+		AGameEquip* pEquip = pWorld->SpawnActor<AGameEquip>(Pair.Value,FVector(), FRotator(), SpawnParams);
 		if (pEquip != nullptr)
 		{
-			pEquip->BindGameObject(this);
+			pEquip->AttachToComponent(GetMesh(), pEquip->GetAttachmentRules(), pEquip->GetSocketName());
+			Equips.Add(Pair.Key, pEquip);
 		}
 	}
 }
@@ -90,34 +94,31 @@ void AGameObject::SetDirctionY(float Value)
 	Dirction.Y = Value;
 }
 
-float AGameObject::GetHPPercent()
+void AGameObject::WearEquip(AGameEquip * pEquip)
 {
-	return HPPercent;
+	if (pEquip == nullptr)
+		return;
+
+	EEquipType type = pEquip->GetEquipType();
+
+	TakeOffEquip(type);
+	
+	pEquip->AttachToComponent(GetMesh(), pEquip->GetAttachmentRules(), pEquip->GetSocketName());
 }
 
-void AGameObject::SetHPPercent(float Value)
+void AGameObject::TakeOffEquip(EEquipType type)
 {
-	HPPercent = Value;
-}
+	if (Equips.Contains(type))
+	{
+		AGameEquip * pEquip = Equips[type];
+		Equips.Remove(type);
 
-int32 AGameObject::GetBuffNoMove()
-{
-	return Buff_NoMove;
-}
-
-void AGameObject::SetBuffNoMove(int32 Value)
-{
-	Buff_NoMove = Value;
-}
-
-bool AGameObject::IsInSkill()
-{
-	return IsSkill;
-}
-
-void AGameObject::SetInSkill(bool Value)
-{
-	IsSkill = Value;
+		if (pEquip != nullptr)
+		{
+			pEquip->DetachRootComponentFromParent();
+			pEquip->Destroy(true, true);
+		}
+	}
 }
 
 

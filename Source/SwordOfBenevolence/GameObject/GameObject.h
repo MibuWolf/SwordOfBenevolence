@@ -38,31 +38,18 @@ public:
 public:
 
 	// 获取动作表现朝向
-	UFUNCTION(BlueprintCallable,  Category = Character)
+	UFUNCTION(BlueprintCallable,  Category = GameObject)
 	FVector		GetDirction();
-	UFUNCTION(BlueprintCallable, Category = Character)
+	UFUNCTION(BlueprintCallable, Category = GameObject)
 	void		SetDirctionX(float Value);
-	UFUNCTION(BlueprintCallable, Category = Character)
+	UFUNCTION(BlueprintCallable, Category = GameObject)
 	void		SetDirctionY(float Value);
-
-	// 获取动作表现HP百分比
-	UFUNCTION(BlueprintCallable,  Category = Character)
-	float		GetHPPercent();
-	UFUNCTION(BlueprintCallable, Category = Character)
-	void		SetHPPercent(float Value);
-
-	// 获取动作表现BUFF移动限制
-	UFUNCTION(BlueprintCallable,  Category = Character)
-	int32		GetBuffNoMove();
-	UFUNCTION(BlueprintCallable, Category = Character)
-	void		SetBuffNoMove(int32 Value);
-
-	// 是否正在释放技能
-	UFUNCTION(BlueprintCallable, Category = Character)
-	bool		IsInSkill();
-	UFUNCTION(BlueprintCallable, Category = Character)
-	void		SetInSkill(bool Value);
-
+	// 穿上装备
+	UFUNCTION(BlueprintCallable, Category = GameObject)
+	void		WearEquip(AGameEquip* pEquip);
+	// 脱装备
+	UFUNCTION(BlueprintCallable, Category = GameObject)
+	void		TakeOffEquip(EEquipType type);
 	
 	// 受击回调(受击逻辑在蓝图中具体实现)
 	UFUNCTION(BlueprintImplementableEvent)
@@ -87,7 +74,7 @@ protected:
 
 	// 装备列表
 	UPROPERTY(EditAnywhere)
-	TMap<EEquipType, TSubclassOf<AGameEquip>> Equips;
+	TMap<EEquipType, TSubclassOf<AGameEquip>> EquipTypes;
 
 protected:
 
@@ -99,6 +86,9 @@ protected:
 	int32		Buff_NoMove;
 	// 当前是否在释放技能
 	bool		IsSkill;
+
+	// 当前装备的所有装备
+	TMap<EEquipType, AGameEquip*> Equips;
 
 	FDelegateHandle EventHandle;
 };

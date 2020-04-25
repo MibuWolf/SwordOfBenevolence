@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Engine/Classes/Components/CapsuleComponent.h"
 #include "GameItem.generated.h"
 
 UCLASS()
@@ -27,8 +28,12 @@ public:
 
 protected:
 
+	/** ½ºÄÒÌå */
+	UPROPERTY(VisibleAnywhere)
+	UCapsuleComponent*	CapsuleComponent;
+
 	/** Ä£ÐÍ */
-	UPROPERTY(EditAnywhere)
-	USkeletalMeshComponent* Mesh;
+	UPROPERTY(VisibleAnywhere)
+	USkeletalMeshComponent* MeshComponent;
 
 };

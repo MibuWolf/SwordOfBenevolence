@@ -10,24 +10,34 @@ AGameEquip::AGameEquip()
 
 }
 
-void AGameEquip::BindGameObject(AGameObject * ownerObject)
+EEquipType AGameEquip::GetEquipType()
 {
-	Owner = ownerObject;
-
-	if (Owner != nullptr)
-	{
-		AActor* TargetActor = Cast<AActor>(Owner);
-		AttachToActor(TargetActor, FAttachmentTransformRules(LocationRule, RotationRule, ScaleRule, bWeldSimulatedBodies), SocketName);
-	}
+	return EquipType;
 }
 
-void AGameEquip::UnbindGameObject()
+FName AGameEquip::GetSocketName()
 {
-	if (Owner != nullptr)
+	switch (EquipType)
 	{
-		AActor* TargetActor = Cast<AActor>(Owner);
-		DetachFromActor(FDetachmentTransformRules(EDetachmentRule(), EDetachmentRule(), EDetachmentRule(), true));
+	case EEquipType::Hair:
+		return "";
+	case EEquipType::Breastplate:
+		return "";
+	case EEquipType::Pants:
+		return "";
+	case EEquipType::Shoes:
+		return "";
+	case EEquipType::MainWeapon:
+		return "R-WeaponSocket";
+	case EEquipType::SubWeapon:
+		return "L-WeaponSocket";
 	}
+	return "";
+}
+
+FAttachmentTransformRules AGameEquip::GetAttachmentRules()
+{
+	return FAttachmentTransformRules(LocationRule, RotationRule, ScaleRule, bWeldSimulatedBodies);
 }
 
 UObjectAttribute * AGameEquip::GetAttribute()
@@ -37,5 +47,6 @@ UObjectAttribute * AGameEquip::GetAttribute()
 
 void AGameEquip::BeginPlay()
 {
-	BindGameObject(Owner);
+	Super::BeginPlay();
+	UE_LOG(LogTemp, Warning, TEXT("Collided with GameItem"));
 }
