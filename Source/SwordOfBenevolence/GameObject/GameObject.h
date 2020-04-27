@@ -50,7 +50,13 @@ public:
 	// 脱装备
 	UFUNCTION(BlueprintCallable, Category = GameObject)
 	void		TakeOffEquip(EEquipType type);
-	
+	// 设置等级
+	UFUNCTION(BlueprintCallable, Category = GameObject)
+	void		SetLevel(int32 level);
+	// 获取等级
+	UFUNCTION(BlueprintCallable, Category = GameObject)
+	int32		GetLevel();
+
 	// 受击回调(受击逻辑在蓝图中具体实现)
 	UFUNCTION(BlueprintImplementableEvent)
 	void OnAttacked(const FGameplayTag& DamageTags);
@@ -76,19 +82,18 @@ protected:
 	UPROPERTY(EditAnywhere)
 	TMap<EEquipType, TSubclassOf<AGameEquip>> EquipTypes;
 
+	// 等级
+	UPROPERTY(EditAnywhere)
+	int32		Level;
+
 protected:
 
 	// 用于动作表现的朝向
 	FVector		Dirction;
-	// 用于动作表现的血量百分比
-	float		HPPercent;
-	// 用于动作表现的BUFF移动限制
-	int32		Buff_NoMove;
-	// 当前是否在释放技能
-	bool		IsSkill;
-
+	
 	// 当前装备的所有装备
 	TMap<EEquipType, AGameEquip*> Equips;
 
 	FDelegateHandle EventHandle;
+
 };

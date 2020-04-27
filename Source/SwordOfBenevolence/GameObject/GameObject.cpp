@@ -16,9 +16,6 @@ AGameObject::AGameObject()
 	Attribute = CreateDefaultSubobject<UObjectAttribute>(TEXT("UObjectAttribute"));
 
 	Dirction = FVector(0.0f, 0.0f, 0.0f);
-	HPPercent = 100.0f;
-	Buff_NoMove = 0;
-	IsSkill = false;
 }
 
 // Called when the game starts or when spawned
@@ -119,6 +116,16 @@ void AGameObject::TakeOffEquip(EEquipType type)
 			pEquip->Destroy(true, true);
 		}
 	}
+}
+
+void AGameObject::SetLevel(int32 level)
+{
+	Level = level;
+}
+
+int32 AGameObject::GetLevel()
+{
+	return Level;
 }
 
 
