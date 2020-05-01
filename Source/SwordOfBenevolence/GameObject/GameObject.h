@@ -50,12 +50,6 @@ public:
 	// 脱装备
 	UFUNCTION(BlueprintCallable, Category = GameObject)
 	void		TakeOffEquip(EEquipType type);
-	// 设置等级
-	UFUNCTION(BlueprintCallable, Category = GameObject)
-	void		SetLevel(int32 level);
-	// 获取等级
-	UFUNCTION(BlueprintCallable, Category = GameObject)
-	int32		GetLevel();
 
 	// 受击回调(受击逻辑在蓝图中具体实现)
 	UFUNCTION(BlueprintImplementableEvent)
@@ -70,6 +64,10 @@ protected:
 
 protected:
 
+	/**头顶及飘血等HUD显示组件*/
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "GameObject|HUD")
+	class UWidgetComponent* HUDComponent;
+
 	/** 能力系统 */
 	UPROPERTY(VisibleAnyWhere)
 	UGameAbilitySystemComponent* AbilitySystemComponent;
@@ -81,10 +79,6 @@ protected:
 	// 装备列表
 	UPROPERTY(EditAnywhere)
 	TMap<EEquipType, TSubclassOf<AGameEquip>> EquipTypes;
-
-	// 等级
-	UPROPERTY(EditAnywhere)
-	int32		Level;
 
 protected:
 

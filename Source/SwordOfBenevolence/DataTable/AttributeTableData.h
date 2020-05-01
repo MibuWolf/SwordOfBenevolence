@@ -3,7 +3,7 @@
 #include "Engine/DataTable.h"
 #include "AttributeTableData.generated.h"
 
-USTRUCT(BlueprintType)
+USTRUCT()
 struct FAttributeTableData : public FTableRowBase
 {
 	GENERATED_USTRUCT_BODY()

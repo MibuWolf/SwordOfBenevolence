@@ -2,8 +2,10 @@
 
 
 #include "GamePlayer.h"
-#include "../Ability/AbilityInputID.h"
-
+#include "../../Ability/AbilityInputID.h"
+#include "../../GamePlay/SOBGameInstance.h"
+#include "../../DataTable/AttributeTableData.h"
+#include "../../DataTable/CharacterLevelTableData.h"
 // Sets default values
 AGamePlayer::AGamePlayer()
 	:Super()
@@ -55,6 +57,8 @@ void AGamePlayer::BeginPlay()
 	{
 		playerController->SetActionOperationMode(false);
 	}
+
+	SetLevel(Level);
 }
 
 // Called every frame
@@ -88,6 +92,62 @@ void AGamePlayer::OnBeginOverlap(UPrimitiveComponent * hitComponet, AActor * oth
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Collided with GameItem"));
 	}
+}
+
+void AGamePlayer::SetLevel(int32 level)
+{
+	Level = level;
+
+	UpdateBasicAttribute();
+
+}
+
+int32 AGamePlayer::GetLevel()
+{
+	return Level;
+}
+
+void AGamePlayer::UpdateBasicAttribute()
+{
+	USOBGameInstance* pGameInstance = Cast<USOBGameInstance>(GetWorld()->GetGameInstance());
+
+	if (pGameInstance == nullptr || Attribute == nullptr)
+		return;
+
+	FString characterLevel = FString::FromInt(Level);
+	FCharacterLevelTableData* pCharacterLevel = pGameInstance->GetCharacterLevelTableData(characterLevel);
+	if (pCharacterLevel == nullptr)
+		return;
+
+	FAttributeTableData* pAttribute = pGameInstance->GetAttributeTableData(pCharacterLevel->AttributeID);
+	if (pAttribute == nullptr)
+		return;
+
+	Attribute->MaxHp = pAttribute->MaxHp;
+	Attribute->HP = pAttribute->MaxHp;
+	Attribute->MaxMp = pAttribute->MaxMp;
+	Attribute->MP = pAttribute->MaxMp;
+	Attribute->ATK = pAttribute->ATK;
+	Attribute->DEF = pAttribute->DEF;
+	Attribute->CRT = pAttribute->CRT;
+	Attribute->STR = pAttribute->STR;
+	Attribute->VIT = pAttribute->VIT;
+	Attribute->TEN = pAttribute->TEN;
+	Attribute->AGI = pAttribute->AGI;
+	Attribute->MGK = pAttribute->MGK;
+	Attribute->RGS = pAttribute->RGS;
+	Attribute->WIS = pAttribute->WIS;
+	Attribute->SPT = pAttribute->SPT;
+	Attribute->CTN = pAttribute->CTN;
+	Attribute->SPD = pAttribute->SPD;
+	Attribute->CON = pAttribute->CON;
+
+	if (Attribute->CUREXP.GetBaseValue() >= Attribute->EXP.GetBaseValue())
+	{
+		Attribute->CUREXP.SetBaseValue(Attribute->CUREXP.GetBaseValue() - Attribute->EXP.GetBaseValue());
+		Attribute->CUREXP.SetCurrentValue(Attribute->CUREXP.GetBaseValue() - Attribute->EXP.GetBaseValue());
+	}
+	Attribute->EXP = pAttribute->EXP;
 }
 
 

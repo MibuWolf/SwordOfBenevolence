@@ -2,7 +2,7 @@
 
 
 #include "GamePlayerController.h"
-#include "../GameObject/GamePlayer.h"
+#include "../GameObject/Player/GamePlayer.h"
 
 AGamePlayerController::AGamePlayerController(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer), bActionMode(false)

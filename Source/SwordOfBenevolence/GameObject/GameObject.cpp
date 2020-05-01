@@ -2,7 +2,7 @@
 
 
 #include "GameObject.h"
-
+#include "../GamePlay/SOBGameInstance.h"
 // Sets default values
 AGameObject::AGameObject()
 {
@@ -112,20 +112,10 @@ void AGameObject::TakeOffEquip(EEquipType type)
 
 		if (pEquip != nullptr)
 		{
-			pEquip->DetachRootComponentFromParent();
+			pEquip->DetachFromActor(FDetachmentTransformRules(EDetachmentRule(), EDetachmentRule(), EDetachmentRule(), true));
 			pEquip->Destroy(true, true);
 		}
 	}
-}
-
-void AGameObject::SetLevel(int32 level)
-{
-	Level = level;
-}
-
-int32 AGameObject::GetLevel()
-{
-	return Level;
 }
 
 

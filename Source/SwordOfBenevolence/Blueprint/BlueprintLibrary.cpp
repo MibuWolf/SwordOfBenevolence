@@ -1,5 +1,6 @@
 #include "BlueprintLibrary.h"
-#include "../DataTable/DataTableConfig.h"
+#include "Engine/World.h"
+#include "../GamePlay/SOBGameInstance.h"
 
 
 UBlueprintLibrary::UBlueprintLibrary(const FObjectInitializer& ObjectInitializer)
@@ -7,8 +8,3 @@ UBlueprintLibrary::UBlueprintLibrary(const FObjectInitializer& ObjectInitializer
 {
 }
 
-
-void	UBlueprintLibrary::LoadAllTableConfig()
-{
-	UDataTableConfig::GetInstance()->LoadAllConfig();
-}

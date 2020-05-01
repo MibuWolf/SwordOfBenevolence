@@ -139,6 +139,13 @@ public:
 	/** 体质（影响玩家负重） */
 	ATTRIBUTE_DEFINE(CON)
 
+	/** 当前经验值 */
+	ATTRIBUTE_DEFINE(CUREXP)
+
+	/** 当前升级需要的经验值 */
+	ATTRIBUTE_DEFINE(EXP)
+
+
 protected:
 
 	/*UFUNCTION()

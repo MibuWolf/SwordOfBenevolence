@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameObject.h"
+#include "../GameObject.h"
 #include "Components/InputComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/Controller.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
-#include "../PlayerController/GamePlayerController.h"
+#include "../../PlayerController/GamePlayerController.h"
 #include "GamePlayer.generated.h"
 
 /**
@@ -40,16 +40,37 @@ public:
 
 	// 开始进入
 	UFUNCTION()
-		void OnBeginOverlap(UPrimitiveComponent* hitComponet, AActor* otherActor, UPrimitiveComponent* otherComponet,
+	void OnBeginOverlap(UPrimitiveComponent* hitComponet, AActor* otherActor, UPrimitiveComponent* otherComponet,
 			int32 otherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
+	// 设置等级
+	UFUNCTION(BlueprintCallable, Category = GameObject)
+	void		SetLevel(int32 level);
+	
+	// 获取等级
+	UFUNCTION(BlueprintCallable, Category = GameObject)
+	int32		GetLevel();
+
+
+protected:
+
+	// 基础属性更新
+	void			UpdateBasicAttribute();
 
 public:
 
 	UPROPERTY(VisibleAnyWhere, BlueprintReadOnly, Category = Camera)
-		USpringArmComponent*		springArm;
+	USpringArmComponent*		springArm;
 
 	UPROPERTY(VisibleAnyWhere, BlueprintReadOnly, Category = Camera)
-		UCameraComponent*			camera;
+	UCameraComponent*			camera;
+
+
+protected:
+
+	// 等级
+	UPROPERTY(EditAnywhere)
+	int32		Level;
+
 
 };
