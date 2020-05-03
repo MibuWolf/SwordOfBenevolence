@@ -3,6 +3,9 @@
 
 #include "GameObject.h"
 #include "../GamePlay/SOBGameInstance.h"
+#include "Components/WidgetComponent.h"
+#include "Kismet/GameplayStatics.h"
+
 // Sets default values
 AGameObject::AGameObject()
 {
@@ -13,9 +16,17 @@ AGameObject::AGameObject()
 	AbilitySystemComponent = CreateDefaultSubobject<UGameAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
 	AbilitySystemComponent->SetIsReplicated(true);
 
+	//Attribute = CreateDefaultSubobject<UGDAttributeSetBase>(TEXT("UGDAttributeSetBase"));
 	Attribute = CreateDefaultSubobject<UObjectAttribute>(TEXT("UObjectAttribute"));
 
 	Dirction = FVector(0.0f, 0.0f, 0.0f);
+
+	HUDComponent = CreateDefaultSubobject<UWidgetComponent>(FName("HUDComponent"));
+	HUDComponent->SetupAttachment(RootComponent);
+	HUDComponent->SetRelativeLocation(FVector(0, 0, 120));
+	HUDComponent->SetWidgetSpace(EWidgetSpace::Screen);
+	HUDComponent->SetDrawSize(FVector2D(500, 500));
+
 }
 
 // Called when the game starts or when spawned
@@ -23,6 +34,9 @@ void AGameObject::BeginPlay()
 {
 	Super::BeginPlay();
 
+	SetLevel(Level);
+
+	// 技能/能力初始化
 	if (AbilitySystemComponent != nullptr)
 	{
 		AbilitySystemComponent->AutoGiveAbilites();
@@ -33,7 +47,7 @@ void AGameObject::BeginPlay()
 		EventHandle = AbilitySystemComponent->RegisterGameplayTagEvent(FGameplayTag::RequestGameplayTag(FName(*SkillTag))).AddUObject(this, &AGameObject::OnGameplayTagCallback);*/
 	}
 
-	UWorld* const pWorld = GetWorld(); // get a reference to the world 
+	UWorld* pWorld = GetWorld(); // get a reference to the world 
 	// 绑定装备
 	for (const TPair<EEquipType, TSubclassOf<AGameEquip>>& Pair : EquipTypes)
 	{
@@ -44,6 +58,19 @@ void AGameObject::BeginPlay()
 		{
 			pEquip->AttachToComponent(GetMesh(), pEquip->GetAttachmentRules(), pEquip->GetSocketName());
 			Equips.Add(Pair.Key, pEquip);
+		}
+	}
+
+	// HUD初始化
+	if (HeadHPBarClass)
+	{
+		APlayerController* PC = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+		HeadHPBar = CreateWidget<UHeadHPBarWidgetBase>(PC, HeadHPBarClass, "HeadHPBarWidgetBase");
+
+		if (HeadHPBar)
+		{
+			HeadHPBar->Initialization(this);
+			HUDComponent->SetWidget(HeadHPBar);
 		}
 	}
 }
@@ -69,6 +96,11 @@ void AGameObject::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+}
+
+UObjectAttribute * AGameObject::GetAttribute()
+{
+	return Attribute;
 }
 
 UAbilitySystemComponent * AGameObject::GetAbilitySystemComponent() const
@@ -124,3 +156,79 @@ void AGameObject::OnGameplayTagCallback(const FGameplayTag InTag, int32 NewCount
 	OnAttacked(InTag);
 }
 
+
+void AGameObject::UpdateBasicAttribute()
+{
+	UWorld* pWorld = GetWorld();
+	if (!pWorld)
+		return;
+
+	USOBGameInstance* pGameInstance = Cast<USOBGameInstance>(pWorld->GetGameInstance());
+
+	if (pGameInstance == nullptr || Attribute == nullptr)
+		return;
+
+	FString characterLevel = FString::FromInt(Level);
+	FCharacterLevelTableData* pCharacterLevel = pGameInstance->GetCharacterLevelTableData(characterLevel);
+	if (pCharacterLevel == nullptr)
+		return;
+
+	FAttributeTableData* pAttribute = pGameInstance->GetAttributeTableData(pCharacterLevel->AttributeID);
+	if (pAttribute == nullptr)
+		return;
+
+	Attribute->MaxHp = pAttribute->MaxHp;
+	Attribute->HP = pAttribute->MaxHp;
+	Attribute->MaxMp = pAttribute->MaxMp;
+	Attribute->MP = pAttribute->MaxMp;
+	Attribute->ATK = pAttribute->ATK;
+	Attribute->DEF = pAttribute->DEF;
+	Attribute->CRT = pAttribute->CRT;
+	Attribute->STR = pAttribute->STR;
+	Attribute->VIT = pAttribute->VIT;
+	Attribute->TEN = pAttribute->TEN;
+	Attribute->AGI = pAttribute->AGI;
+	Attribute->MGK = pAttribute->MGK;
+	Attribute->RGS = pAttribute->RGS;
+	Attribute->WIS = pAttribute->WIS;
+	Attribute->SPT = pAttribute->SPT;
+	Attribute->CTN = pAttribute->CTN;
+	Attribute->SPD = pAttribute->SPD;
+	Attribute->CON = pAttribute->CON;
+
+	if (Attribute->CUREXP.GetBaseValue() >= Attribute->EXP.GetBaseValue())
+	{
+		Attribute->CUREXP.SetBaseValue(Attribute->CUREXP.GetBaseValue() - Attribute->EXP.GetBaseValue());
+		Attribute->CUREXP.SetCurrentValue(Attribute->CUREXP.GetBaseValue() - Attribute->EXP.GetBaseValue());
+	}
+	Attribute->EXP = pAttribute->EXP;
+}
+
+
+void		AGameObject::SetLevel(int32 level)
+{
+	int32 oldLevel = Level;
+	Level = level;
+
+	UpdateBasicAttribute();
+
+	LevelChangedHandle.Broadcast(oldLevel, Level);
+}
+
+int32		AGameObject::GetLevel()
+{
+	return Level;
+}
+
+void		AGameObject::SetName(FString NewName)
+{
+	FString oldName = Name;
+	Name = NewName;
+
+	NameChangedHandle.Broadcast(oldName, Name);
+}
+
+FString		AGameObject::GetName()
+{
+	return Name;
+}

@@ -16,13 +16,6 @@
 	GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
 
 
-// 属性定义
-// 如果需要服务器改变属性回调 则要这样定义  UPROPERTY(BlueprintReadOnly, Category = "ObjectAttribute", ReplicatedUsing = OnRep_##AttributeName)		
-#define ATTRIBUTE_DEFINE(AttributeName)		\
-UPROPERTY(BlueprintReadOnly, Category = "ObjectAttribute")		\
-FGameplayAttributeData AttributeName;																	\
-ATTRIBUTE_ACCESSORS(UObjectAttribute, AttributeName)
-
 
 UENUM(BlueprintType)
 enum class EAttributeType : uint8
@@ -86,65 +79,104 @@ public:
 public:
 
 	/** 当前血量 */
-	ATTRIBUTE_DEFINE(HP)
+	UPROPERTY(BlueprintReadOnly, Category = "HP")
+	FGameplayAttributeData HP;
+	ATTRIBUTE_ACCESSORS(UObjectAttribute, HP)
 
 	/** 最大血量 */
-	ATTRIBUTE_DEFINE(MaxHp)
+	UPROPERTY(BlueprintReadOnly, Category = "MaxHp")
+	FGameplayAttributeData MaxHp;
+	ATTRIBUTE_ACCESSORS(UObjectAttribute, MaxHp)
 
 	/** 当前蓝量 */
-	ATTRIBUTE_DEFINE(MP)
+	UPROPERTY(BlueprintReadOnly, Category = "MP")
+	FGameplayAttributeData MP;
+	ATTRIBUTE_ACCESSORS(UObjectAttribute, MP)
 
 	/** 最大蓝量 */
-	ATTRIBUTE_DEFINE(MaxMp)
-
+	UPROPERTY(BlueprintReadOnly, Category = "MaxMp")
+	FGameplayAttributeData MaxMp;
+	ATTRIBUTE_ACCESSORS(UObjectAttribute, MaxMp)
+	
 	/** 物理攻击力 */
-	ATTRIBUTE_DEFINE(ATK)
+	UPROPERTY(BlueprintReadOnly, Category = "ATK")
+	FGameplayAttributeData ATK;
+	ATTRIBUTE_ACCESSORS(UObjectAttribute, ATK)
 
 	/** 物理防御力 */
-	ATTRIBUTE_DEFINE(DEF)
+	UPROPERTY(BlueprintReadOnly, Category = "DEF")
+	FGameplayAttributeData DEF;
+	ATTRIBUTE_ACCESSORS(UObjectAttribute, DEF)
 
 	/** 暴击(物理暴击) */
-	ATTRIBUTE_DEFINE(CRT)
+	UPROPERTY(BlueprintReadOnly, Category = "CRT")
+	FGameplayAttributeData CRT;
+	ATTRIBUTE_ACCESSORS(UObjectAttribute, CRT)
 
 	/** 力量(影响物理攻击力数值) */
-	ATTRIBUTE_DEFINE(STR)
+	UPROPERTY(BlueprintReadOnly, Category = "STR")
+	FGameplayAttributeData STR;
+	ATTRIBUTE_ACCESSORS(UObjectAttribute, STR)
 
 	/** 耐力(影响物理防御力数值) */
-	ATTRIBUTE_DEFINE(VIT)
+	UPROPERTY(BlueprintReadOnly, Category = "VIT")
+	FGameplayAttributeData VIT;
+	ATTRIBUTE_ACCESSORS(UObjectAttribute, VIT)
 
 	/** 韧性(影响最大血量) */
-	ATTRIBUTE_DEFINE(TEN)
+	UPROPERTY(BlueprintReadOnly, Category = "TEN")
+	FGameplayAttributeData TEN;
+	ATTRIBUTE_ACCESSORS(UObjectAttribute, TEN)
 
 	/** 敏捷(影响物理暴击率) */
-	ATTRIBUTE_DEFINE(AGI)
-	
+	UPROPERTY(BlueprintReadOnly, Category = "AGI")
+	FGameplayAttributeData AGI;
+	ATTRIBUTE_ACCESSORS(UObjectAttribute, AGI)
+
 	/** 魔法伤害 */
-	ATTRIBUTE_DEFINE(MGK)
+	UPROPERTY(BlueprintReadOnly, Category = "MGK")
+	FGameplayAttributeData MGK;
+	ATTRIBUTE_ACCESSORS(UObjectAttribute, MGK)
 
 	/** 魔法防御 */
-	ATTRIBUTE_DEFINE(RGS)
+	UPROPERTY(BlueprintReadOnly, Category = "RGS")
+	FGameplayAttributeData RGS;
+	ATTRIBUTE_ACCESSORS(UObjectAttribute, RGS)
 
 	/** 智力(影响魔法伤害) */
-	ATTRIBUTE_DEFINE(WIS)
+	UPROPERTY(BlueprintReadOnly, Category = "WIS")
+	FGameplayAttributeData WIS;
+	ATTRIBUTE_ACCESSORS(UObjectAttribute, WIS)
 
 	/** 精神(影响魔法防御) */
-	ATTRIBUTE_DEFINE(SPT)
+	UPROPERTY(BlueprintReadOnly, Category = "SPT")
+	FGameplayAttributeData SPT;
+	ATTRIBUTE_ACCESSORS(UObjectAttribute, SPT)
 
 	/** 专注力(影响魔法暴击率) */
-	ATTRIBUTE_DEFINE(CTN)
+	UPROPERTY(BlueprintReadOnly, Category = "CTN")
+	FGameplayAttributeData CTN;
+	ATTRIBUTE_ACCESSORS(UObjectAttribute, CTN)
 
 	/** 移动速度 */
-	ATTRIBUTE_DEFINE(SPD)
+	UPROPERTY(BlueprintReadOnly, Category = "SPD")
+	FGameplayAttributeData SPD;
+	ATTRIBUTE_ACCESSORS(UObjectAttribute, SPD)
 
 	/** 体质（影响玩家负重） */
-	ATTRIBUTE_DEFINE(CON)
+	UPROPERTY(BlueprintReadOnly, Category = "CON")
+	FGameplayAttributeData CON;
+	ATTRIBUTE_ACCESSORS(UObjectAttribute, CON)
 
 	/** 当前经验值 */
-	ATTRIBUTE_DEFINE(CUREXP)
+	UPROPERTY(BlueprintReadOnly, Category = "CUREXP")
+	FGameplayAttributeData CUREXP;
+	ATTRIBUTE_ACCESSORS(UObjectAttribute, CUREXP)
 
 	/** 当前升级需要的经验值 */
-	ATTRIBUTE_DEFINE(EXP)
-
+	UPROPERTY(BlueprintReadOnly, Category = "EXP")
+	FGameplayAttributeData EXP;
+	ATTRIBUTE_ACCESSORS(UObjectAttribute, EXP)
 
 protected:
 

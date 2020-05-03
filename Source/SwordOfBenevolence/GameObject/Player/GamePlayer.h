@@ -43,14 +43,6 @@ public:
 	void OnBeginOverlap(UPrimitiveComponent* hitComponet, AActor* otherActor, UPrimitiveComponent* otherComponet,
 			int32 otherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
-	// 设置等级
-	UFUNCTION(BlueprintCallable, Category = GameObject)
-	void		SetLevel(int32 level);
-	
-	// 获取等级
-	UFUNCTION(BlueprintCallable, Category = GameObject)
-	int32		GetLevel();
-
 
 protected:
 
@@ -64,13 +56,5 @@ public:
 
 	UPROPERTY(VisibleAnyWhere, BlueprintReadOnly, Category = Camera)
 	UCameraComponent*			camera;
-
-
-protected:
-
-	// 等级
-	UPROPERTY(EditAnywhere)
-	int32		Level;
-
 
 };
