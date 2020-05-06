@@ -2,6 +2,10 @@
 
 
 #include "GameAbilitySystemComponent.h"
+#include "../GamePlay/SOBGameInstance.h"
+#include "../DataTable/SkillTableData.h"
+#include "GameAbility/GameSkill/GameSkill.h"
+#include "UObject/UObjectGlobals.h"
 
 UGameAbilitySystemComponent::UGameAbilitySystemComponent()
 {
@@ -10,12 +14,17 @@ UGameAbilitySystemComponent::UGameAbilitySystemComponent()
 
 void UGameAbilitySystemComponent::AutoGiveAbilites()
 {
-	for (const TPair<EAbilityInputID, TSubclassOf<UGameAbility>>& Pair : AllPossibleAbilities)
+	AddSkill(10000);
+	AddSkill(10001);
+	AddSkill(10002);
+	AddSkill(10003);
+	AddSkill(10004);
+	for (const TPair<int32, TSubclassOf<UGameAbility>>& Pair : AllPossibleAbilities)
 	{
 		UGameAbility* pAbility = Cast<UGameAbility>(Pair.Value.GetDefaultObject());
 		if (pAbility->CanAutoGive())
 		{
-			GiveAbility(FGameplayAbilitySpec(Pair.Value, 1, int32(Pair.Key), GetOwner()));
+			GiveAbility(FGameplayAbilitySpec(Pair.Value, 1, int32(pAbility->GetAbilityInputID()), GetOwner()));
 		}
 	}
 }
@@ -23,20 +32,6 @@ void UGameAbilitySystemComponent::AutoGiveAbilites()
 
 void UGameAbilitySystemComponent::AbilityLocalInputPressed(int32 InputID)
 {
-	if (!AbilityComboCount.Contains(EAbilityInputID(InputID)))
-		AbilityComboCount.Add(EAbilityInputID(InputID), 0);
-
-	//FString ComboTag = FString::Printf(TEXT("Ability.Skill.Combo.%d"), InputID);
-	FGameplayTagContainer tagContainer;
-	//tagContainer.AddTag(FGameplayTag::RequestGameplayTag(FName(*ComboTag)));
-	bool bCombo = false;
-	if (HasAnyMatchingGameplayTags(tagContainer))
-	{
-		AbilityComboCount[EAbilityInputID(InputID)] = AbilityComboCount[EAbilityInputID(InputID)] + 1;
-
-		bCombo = true;
-	}
-
 	// Consume the input if this InputID is overloaded with GenericConfirm/Cancel and the GenericConfim/Cancel callback is bound
 	if (IsGenericConfirmInputBound(InputID))
 	{
@@ -52,6 +47,21 @@ void UGameAbilitySystemComponent::AbilityLocalInputPressed(int32 InputID)
 
 	// ---------------------------------------------------------
 	int32 count = 0;
+	bool bCombo = false;
+
+	if (!AbilityComboCount.Contains(EAbilityInputID(InputID)))
+		AbilityComboCount.Add(EAbilityInputID(InputID), 0);
+
+	if (ResponseCombo.Contains(EAbilityInputID(InputID)) && ResponseCombo[EAbilityInputID(InputID)])
+	{
+		AbilityComboCount[EAbilityInputID(InputID)] = AbilityComboCount[EAbilityInputID(InputID)] + 1;
+		bCombo = true;
+
+		int32 comboCount = GetAbilityCountByInputID(EAbilityInputID(InputID));
+		if (AbilityComboCount[EAbilityInputID(InputID)] >= comboCount)
+			AbilityComboCount[EAbilityInputID(InputID)] = 0;
+	}
+
 	ABILITYLIST_SCOPE_LOCK();
 	for (FGameplayAbilitySpec& Spec : ActivatableAbilities.Items)
 	{
@@ -94,4 +104,63 @@ void UGameAbilitySystemComponent::AbilityLocalInputPressed(int32 InputID)
 			}
 		}
 	}
+}
+
+void UGameAbilitySystemComponent::SetAbilityResponseCombo(EAbilityInputID InputID, bool canResponse)
+{
+	if (!ResponseCombo.Contains(InputID))
+		ResponseCombo.Add(InputID, canResponse);
+	else
+		ResponseCombo[InputID] = canResponse;
+}
+
+void UGameAbilitySystemComponent::AddSkill(int32 skillID)
+{
+	if (AllPossibleAbilities.Contains(skillID))
+		return;
+
+	UWorld* pWorld = GetWorld();
+	if (!pWorld)
+		return;
+
+	USOBGameInstance* pGameInstance = Cast<USOBGameInstance>(pWorld->GetGameInstance());
+
+	if (!pGameInstance)
+		return;
+
+	FString strSkillID = FString::FromInt(skillID);
+	FSkillTableData* pSkillTable = pGameInstance->GetSkillTableData(strSkillID);
+
+	if (!pSkillTable)
+		return;
+
+	FString skillPath = FString::Printf(TEXT("/Game/Characters/Blueprint/Ability/%s"), *(pSkillTable->SkillBlueprint));//"/Game/Characters/Blueprint/Ability/Warrior/NormalAttack/GA_NormalAttackA.GA_NormalAttackA_C";//pSkillTable->SkillBlueprint;  // TEXT("Blueprint'/Game/BluePrint/TestObj.TestObj'")
+	UClass* loadObj = StaticLoadClass(UGameAbility::StaticClass(), NULL, *skillPath);
+	if (loadObj != nullptr)
+	{
+		UGameAbility* pGameSkill = loadObj->GetDefaultObject <UGameAbility>();
+		
+		if (pGameSkill != nullptr)
+		{
+			AllPossibleAbilities.Add(skillID, pGameSkill->GetClass());
+
+			if (pGameSkill->CanAutoGive())
+			{
+				GiveAbility(FGameplayAbilitySpec(pGameSkill, 1, int32(pGameSkill->GetAbilityInputID()), GetOwner()));
+			}
+			//UE_LOG(LogClass, Log, TEXT("Success"));
+		}
+	}
+}
+
+int32 UGameAbilitySystemComponent::GetAbilityCountByInputID(EAbilityInputID InputID)
+{
+	int32 count = 0;
+	for (FGameplayAbilitySpec& Spec : ActivatableAbilities.Items)
+	{
+		if (Spec.InputID == (int32)InputID)
+			count++;
+	}
+
+	return count;
 }

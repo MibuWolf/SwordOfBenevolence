@@ -6,7 +6,6 @@
 #include "GameFramework/Character.h"
 #include "AbilitySystemInterface.h"
 #include "../Ability/Attribute/ObjectAttribute.h"
-#include "../Ability/Attribute/GDAttributeSetBase.h"
 #include "../Ability/GameAbilitySystemComponent.h"
 #include "../GameItem/GameEquip.h"
 #include "../HUD/HeadHPBarWidgetBase.h"
@@ -43,6 +42,12 @@ public:
 
 	// Implement IAbilitySystemInterface
 	UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+
+	// 等级变更回调
+	FGameObjectLevelChangedHandle		GetLevelChangeDelegate();
+
+	// 名字变更回调
+	FGameObjectNameChangedHandle		GetNameChangeDelegate();
 
 public:
 
@@ -107,7 +112,7 @@ protected:
 	UHeadHPBarWidgetBase* HeadHPBar;
 
 	/** 能力系统 */
-	UPROPERTY(VisibleAnyWhere)
+	UPROPERTY(VisibleAnywhere)
 	UGameAbilitySystemComponent* AbilitySystemComponent;
 
 	/**属性*/

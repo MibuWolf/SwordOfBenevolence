@@ -46,6 +46,10 @@ public:
 
 protected:
 
+	void OnLevelChanged(const int32& oldLevel, const int32& newLevel);
+
+	void OnNameChanged(const FString& oldName, const FString& newName);
+
 	void OnHPChanged(const FOnAttributeChangeData& CallbackData);
 
 	void OnMaxHPChanged(const FOnAttributeChangeData& CallbackData);
@@ -62,5 +66,7 @@ protected:
 	FDelegateHandle MaxHPEventHandle;
 	FDelegateHandle MPEventHandle;
 	FDelegateHandle MaxMPEventHandle;
+	FDelegateHandle LevelHandle;
+	FDelegateHandle NameHandle;
 
 };

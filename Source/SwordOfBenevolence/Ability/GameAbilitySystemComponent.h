@@ -25,20 +25,34 @@ public:
 	UFUNCTION(BlueprintCallable, Category = Ability)
 	void		AutoGiveAbilites();
 
+	// 根据技能ID添加技能
+	UFUNCTION(BlueprintCallable, Category = Ability)
+	void		AddSkill(int32 skillID);
+
 
 public:
 
 	virtual void AbilityLocalInputPressed(int32 InputID);
 
+public:
+
+	// 设置某按键能力是否可以响应连招
+	void		SetAbilityResponseCombo(EAbilityInputID InputID, bool canResponse);
+
 protected:
 
+	// 根据绑定的输入ID获取绑定在该输入上的能力个数（Combo个数）
+	int32		GetAbilityCountByInputID(EAbilityInputID InputID);
 
-	// 当前角色所有可能拥有的能力，也就是这个MAP是该角色拥有能里的最大集合
-	// 但在该Map中的能力并不意味着当前角色已经被给与GiveAbility(可能根据某些
-	// 条件给与如使用道具后才拥有此能力等)
+protected:
+
+	// 当前角色拥有的能力
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Ability)
-	TMap<EAbilityInputID, TSubclassOf<UGameAbility>> AllPossibleAbilities;
+	TMap<int32, TSubclassOf<UGameAbility>> AllPossibleAbilities;
 	
 	// 当前连招段数
-	TMap<EAbilityInputID, int32> AbilityComboCount;			// 
+	TMap<EAbilityInputID, int32> AbilityComboCount;			
+	// 当前是否相应连招
+	TMap<EAbilityInputID, bool> ResponseCombo;
+
 };

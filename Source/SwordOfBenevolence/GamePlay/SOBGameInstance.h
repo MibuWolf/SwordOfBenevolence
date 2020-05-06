@@ -7,6 +7,7 @@
 #include "../DataTable/CharacterLevelTableData.h"
 #include "../DataTable/MonsterTableData.h"
 #include "../DataTable/NPCTableData.h"
+#include "../DataTable/SkillTableData.h"
 #include "SOBGameInstance.generated.h"
 
 #define TABLEDATA_INTERFACE(TABLE_NAME)				\
@@ -40,6 +41,8 @@ public:
 	TABLEDATA_INTERFACE(Monster);
 	// NPC±í
 	TABLEDATA_INTERFACE(NPC);
+	// Skill±í
+	TABLEDATA_INTERFACE(Skill);
 
 protected:
 

@@ -42,6 +42,12 @@ protected:
 protected:
 
 	UPROPERTY(EditAnywhere, Category = Ability)
+	int32				SkillID;		// 技能ID
+
+	UPROPERTY(EditAnywhere, Category = Ability)
+	int32				Level;			// 技能等级
+
+	UPROPERTY(EditAnywhere, Category = Ability)
 	EAbilityInputID		InputID;		// 绑定按键
 
 	UPROPERTY(EditAnywhere, Category = Ability)

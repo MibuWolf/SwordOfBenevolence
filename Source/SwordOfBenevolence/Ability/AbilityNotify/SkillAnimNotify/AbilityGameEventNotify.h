@@ -6,20 +6,20 @@
 #include "GameplayTagContainer.h"
 #include "Animation/AnimNotifies/AnimNotify.h"
 #include "Abilities/GameplayAbilityTypes.h"
-#include "AbilityAnimNotify.generated.h"
+#include "AbilityGameEventNotify.generated.h"
 
 /**
- * 
+ *
  */
 UCLASS()
-class SWORDOFBENEVOLENCE_API UAbilityAnimNotify : public UAnimNotify
+class SWORDOFBENEVOLENCE_API UAbilityGameEventNotify : public UAnimNotify
 {
 	GENERATED_BODY()
 
 public:
 
 	virtual void Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation);
-	
+
 public:
 
 	UPROPERTY(EditAnywhere, Category = Ability)

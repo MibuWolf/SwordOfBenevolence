@@ -25,7 +25,8 @@ AGameObject::AGameObject()
 	HUDComponent->SetupAttachment(RootComponent);
 	HUDComponent->SetRelativeLocation(FVector(0, 0, 120));
 	HUDComponent->SetWidgetSpace(EWidgetSpace::Screen);
-	HUDComponent->SetDrawSize(FVector2D(500, 500));
+	HUDComponent->SetDrawAtDesiredSize(true);
+	HUDComponent->SetDrawSize(FVector2D(200, 50));
 
 }
 
@@ -108,6 +109,16 @@ UAbilitySystemComponent * AGameObject::GetAbilitySystemComponent() const
 	return AbilitySystemComponent;
 }
 
+FGameObjectLevelChangedHandle AGameObject::GetLevelChangeDelegate()
+{
+	return LevelChangedHandle;
+}
+
+FGameObjectNameChangedHandle AGameObject::GetNameChangeDelegate()
+{
+	return NameChangedHandle;
+}
+
 FVector AGameObject::GetDirction()
 {
 	return Dirction;
@@ -178,9 +189,9 @@ void AGameObject::UpdateBasicAttribute()
 		return;
 
 	Attribute->MaxHp = pAttribute->MaxHp;
-	Attribute->HP = pAttribute->MaxHp;
+	Attribute->HP = pAttribute->MaxHp - 50;
 	Attribute->MaxMp = pAttribute->MaxMp;
-	Attribute->MP = pAttribute->MaxMp;
+	Attribute->MP = pAttribute->MaxMp - 50;
 	Attribute->ATK = pAttribute->ATK;
 	Attribute->DEF = pAttribute->DEF;
 	Attribute->CRT = pAttribute->CRT;
