@@ -4,7 +4,9 @@
 #include "GameSkill.h"
 #include "Animation/AnimInstance.h"
 #include "AbilitySystemComponent.h"
-
+#include "../../../GamePlay/SOBGameInstance.h"
+#include "../../../DataTable/SkillTableData.h"
+#include "../../../DataTable/AttributeTableData.h"
 
 
 UGameSkill::UGameSkill()
@@ -22,6 +24,8 @@ void UGameSkill::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const 
 	}
 
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
+
+	UpdateAttribute();
 
 	UAnimInstance* AnimInstance = ActorInfo->GetAnimInstance();
 	UAbilitySystemComponent* AbilitySystemComponent = GetAbilitySystemComponentFromActorInfo();
@@ -71,6 +75,13 @@ void UGameSkill::OnMontageEnded(UAnimMontage * Montage, bool bInterrupted)
 	EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, bReplicateEndAbility, bWasCancelled);
 }
 
+void UGameSkill::SetLevel(int32 level)
+{
+	Super::SetLevel(level);
+
+	UpdateAttribute();
+}
+
 bool UGameSkill::StopMontage()
 {
 	const FGameplayAbilityActorInfo* ActorInfo = GetCurrentActorInfo();
@@ -107,4 +118,32 @@ bool UGameSkill::StopMontage()
 	}
 
 	return false;
+}
+
+void UGameSkill::UpdateAttribute()
+{
+	UWorld* pWorld = GetWorld();
+	if (!pWorld)
+		return;
+
+	USOBGameInstance* pGameInstance = Cast<USOBGameInstance>(pWorld->GetGameInstance());
+
+	if (pGameInstance == nullptr)
+		return;
+
+	FString strID = FString::FromInt(SkillID);
+	FSkillTableData* pSkill = pGameInstance->GetSkillTableData(strID);
+
+	if (pSkill == nullptr)
+		return;
+
+	FString strLevel = FString::FromInt(Level);
+	FString attributeID = pSkill->AttributeID + strLevel;
+
+	FAttributeTableData* pAttribute = pGameInstance->GetAttributeTableData(attributeID);
+
+	if (pAttribute == nullptr)
+		return;
+
+	PlayRate = float(pAttribute->SPD) / 100.0f;
 }

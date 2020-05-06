@@ -26,15 +26,20 @@ public:
 	// 重载结束技能
 	virtual void EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled);
 
+	// 动作结束
+	void OnMontageEnded(UAnimMontage* Montage, bool bInterrupted);
 
 public:
 
-	void OnMontageEnded(UAnimMontage* Montage, bool bInterrupted);
+	// 设置当前技能等级
+	virtual void		SetLevel(int32 lv);
 
 
 protected:
 
-	bool StopMontage();
+	bool	StopMontage();
+
+	void	UpdateAttribute();
 
 public:
 
@@ -43,10 +48,9 @@ public:
 	UAnimMontage*		MontageToPlay;
 
 	UPROPERTY(EditDefaultsOnly, Category = MontageAbility)
-	float	PlayRate = 1.0f;
-
-	UPROPERTY(EditDefaultsOnly, Category = MontageAbility)
 	FName	SectionName;
 
 	bool	IsPlaying = false;
+
+	float	PlayRate = 1.0f;
 };

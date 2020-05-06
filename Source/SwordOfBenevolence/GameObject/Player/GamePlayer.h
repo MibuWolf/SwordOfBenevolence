@@ -43,6 +43,8 @@ public:
 	void OnBeginOverlap(UPrimitiveComponent* hitComponet, AActor* otherActor, UPrimitiveComponent* otherComponet,
 			int32 otherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
+	// …Ë÷√µ»º∂
+	virtual void	SetLevel(int32 level);
 
 protected:
 

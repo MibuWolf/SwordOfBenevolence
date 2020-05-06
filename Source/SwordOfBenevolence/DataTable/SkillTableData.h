@@ -21,4 +21,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = AttributeTableData)
 	FString SkillBlueprint;		// 技能蓝图
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = AttributeTableData)
+	FString AttributeID;		// 技能属性（与当前技能等级拼接后查找属性表）
 };

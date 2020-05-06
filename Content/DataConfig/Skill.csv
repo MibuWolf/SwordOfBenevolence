@@ -1,6 +1,6 @@
-,Name,SkillIcon,SkillInfo,SkillBlueprint
-10000,落雁五式,,,Warrior/NormalAttack/GA_NormalAttackA.GA_NormalAttackA_C
-10001,落雁五式,,,Warrior/NormalAttack/GA_NormalAttackB.GA_NormalAttackB_C
-10002,落雁五式,,,Warrior/NormalAttack/GA_NormalAttackC.GA_NormalAttackC_C
-10003,落雁五式,,,Warrior/NormalAttack/GA_NormalAttackD.GA_NormalAttackD_C
-10004,落雁五式,,,Warrior/NormalAttack/GA_NormalAttackE.GA_NormalAttackE_C
+,Name,SkillIcon,SkillInfo,SkillBlueprint,AttributeID
+10000,落雁五式,,,Warrior/NormalAttack/GA_NormalAttackA.GA_NormalAttackA_C,Skill10000_LV_
+10001,落雁五式,,,Warrior/NormalAttack/GA_NormalAttackB.GA_NormalAttackB_C,Skill10001_LV_
+10002,落雁五式,,,Warrior/NormalAttack/GA_NormalAttackC.GA_NormalAttackC_C,Skill10002_LV_
+10003,落雁五式,,,Warrior/NormalAttack/GA_NormalAttackD.GA_NormalAttackD_C,Skill10003_LV_
+10004,落雁五式,,,Warrior/NormalAttack/GA_NormalAttackE.GA_NormalAttackE_C,Skill10004_LV_

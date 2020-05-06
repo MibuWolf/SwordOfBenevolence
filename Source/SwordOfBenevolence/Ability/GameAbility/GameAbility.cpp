@@ -64,6 +64,16 @@ void UGameAbility::OnAvatarSet(const FGameplayAbilityActorInfo * ActorInfo, cons
 	}
 }
 
+void UGameAbility::SetLevel(int32 level)
+{
+	Level = level;
+}
+
+int32 UGameAbility::GetLevel()
+{
+	return Level;
+}
+
 
 void UGameAbility::OnGameplayEvent(FGameplayTag EventTag, const FGameplayEventData * Payload)
 {

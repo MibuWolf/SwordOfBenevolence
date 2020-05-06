@@ -35,6 +35,16 @@ public:
 	/** Called when the avatar actor is set/changes */
 	virtual void OnAvatarSet(const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilitySpec& Spec) override;
 
+public:
+
+	// 设置当前技能等级
+	UFUNCTION(BlueprintCallable, Category = GameObject)
+	virtual void		SetLevel(int32 level);
+
+	// 设置当前技能等级
+	UFUNCTION(BlueprintCallable, Category = GameObject)
+	int32		GetLevel();
+
 protected:
 
 	void OnGameplayEvent(FGameplayTag EventTag, const FGameplayEventData* Payload);

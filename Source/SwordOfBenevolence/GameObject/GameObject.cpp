@@ -168,62 +168,9 @@ void AGameObject::OnGameplayTagCallback(const FGameplayTag InTag, int32 NewCount
 }
 
 
-void AGameObject::UpdateBasicAttribute()
-{
-	UWorld* pWorld = GetWorld();
-	if (!pWorld)
-		return;
-
-	USOBGameInstance* pGameInstance = Cast<USOBGameInstance>(pWorld->GetGameInstance());
-
-	if (pGameInstance == nullptr || Attribute == nullptr)
-		return;
-
-	FString characterLevel = FString::FromInt(Level);
-	FCharacterLevelTableData* pCharacterLevel = pGameInstance->GetCharacterLevelTableData(characterLevel);
-	if (pCharacterLevel == nullptr)
-		return;
-
-	FAttributeTableData* pAttribute = pGameInstance->GetAttributeTableData(pCharacterLevel->AttributeID);
-	if (pAttribute == nullptr)
-		return;
-
-	Attribute->MaxHp = pAttribute->MaxHp;
-	Attribute->HP = pAttribute->MaxHp - 50;
-	Attribute->MaxMp = pAttribute->MaxMp;
-	Attribute->MP = pAttribute->MaxMp - 50;
-	Attribute->ATK = pAttribute->ATK;
-	Attribute->DEF = pAttribute->DEF;
-	Attribute->CRT = pAttribute->CRT;
-	Attribute->STR = pAttribute->STR;
-	Attribute->VIT = pAttribute->VIT;
-	Attribute->TEN = pAttribute->TEN;
-	Attribute->AGI = pAttribute->AGI;
-	Attribute->MGK = pAttribute->MGK;
-	Attribute->RGS = pAttribute->RGS;
-	Attribute->WIS = pAttribute->WIS;
-	Attribute->SPT = pAttribute->SPT;
-	Attribute->CTN = pAttribute->CTN;
-	Attribute->SPD = pAttribute->SPD;
-	Attribute->CON = pAttribute->CON;
-
-	if (Attribute->CUREXP.GetBaseValue() >= Attribute->EXP.GetBaseValue())
-	{
-		Attribute->CUREXP.SetBaseValue(Attribute->CUREXP.GetBaseValue() - Attribute->EXP.GetBaseValue());
-		Attribute->CUREXP.SetCurrentValue(Attribute->CUREXP.GetBaseValue() - Attribute->EXP.GetBaseValue());
-	}
-	Attribute->EXP = pAttribute->EXP;
-}
-
-
 void		AGameObject::SetLevel(int32 level)
 {
-	int32 oldLevel = Level;
 	Level = level;
-
-	UpdateBasicAttribute();
-
-	LevelChangedHandle.Broadcast(oldLevel, Level);
 }
 
 int32		AGameObject::GetLevel()

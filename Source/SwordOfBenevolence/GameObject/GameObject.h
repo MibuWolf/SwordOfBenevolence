@@ -53,36 +53,36 @@ public:
 
 	// 获取动作表现朝向
 	UFUNCTION(BlueprintCallable,  Category = GameObject)
-	FVector		GetDirction();
+	FVector			GetDirction();
 
 	UFUNCTION(BlueprintCallable, Category = GameObject)
-	void		SetDirctionX(float Value);
+	void			SetDirctionX(float Value);
 
 	UFUNCTION(BlueprintCallable, Category = GameObject)
-	void		SetDirctionY(float Value);
+	void			SetDirctionY(float Value);
 
 	// 穿上装备
 	UFUNCTION(BlueprintCallable, Category = GameObject)
-	void		WearEquip(AGameEquip* pEquip);
+	void			WearEquip(AGameEquip* pEquip);
 	// 脱装备
 	UFUNCTION(BlueprintCallable, Category = GameObject)
-	void		TakeOffEquip(EEquipType type);
+	void			TakeOffEquip(EEquipType type);
 
 	// 设置等级
 	UFUNCTION(BlueprintCallable, Category = GameObject)
-	void		SetLevel(int32 level);
+	virtual void	SetLevel(int32 level);
 
 	// 获取等级
 	UFUNCTION(BlueprintCallable, Category = GameObject)
-	int32		GetLevel();
+	int32			GetLevel();
 
 	// 设置名字
 	UFUNCTION(BlueprintCallable, Category = GameObject)
-	void		SetName(FString NewName);
+	void			SetName(FString NewName);
 
 	// 获取名字
 	UFUNCTION(BlueprintCallable, Category = GameObject)
-	FString		GetName();
+	FString			GetName();
 
 	// 受击回调(受击逻辑在蓝图中具体实现)
 	UFUNCTION(BlueprintImplementableEvent)
@@ -94,8 +94,6 @@ protected:
 
 	void OnGameplayTagCallback(const FGameplayTag InTag, int32 NewCount);
 
-	// 基础属性更新
-	void			UpdateBasicAttribute();
 
 protected:
 
