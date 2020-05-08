@@ -24,7 +24,7 @@ void UGameAbilitySystemComponent::AutoGiveAbilites()
 		UGameAbility* pAbility = Cast<UGameAbility>(Pair.Value.GetDefaultObject());
 		if (pAbility->CanAutoGive())
 		{
-			GiveAbility(FGameplayAbilitySpec(Pair.Value, 1, int32(pAbility->GetAbilityInputID()), GetOwner()));
+			GiveAbility(FGameplayAbilitySpec(Pair.Value, pAbility->GetLevel(), int32(pAbility->GetAbilityInputID()), GetOwner()));
 		}
 	}
 }

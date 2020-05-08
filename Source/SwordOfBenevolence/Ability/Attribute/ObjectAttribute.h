@@ -143,6 +143,11 @@ public:
 	FGameplayAttributeData RGS;
 	ATTRIBUTE_ACCESSORS(UObjectAttribute, RGS)
 
+	/** 魔法暴击率 */
+	UPROPERTY(BlueprintReadOnly, Category = "MCR")
+	FGameplayAttributeData MCR;
+	ATTRIBUTE_ACCESSORS(UObjectAttribute, MCR)
+
 	/** 智力(影响魔法伤害) */
 	UPROPERTY(BlueprintReadOnly, Category = "WIS")
 	FGameplayAttributeData WIS;
