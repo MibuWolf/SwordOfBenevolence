@@ -96,16 +96,14 @@ void UDamageExecutionCalculation::Execute_Implementation(const FGameplayEffectCu
 	// ÑªÁ¿
 	float HP = FMath::Max<float>(ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatics().HPDef, EvaluationParameters, HP), 0.0f);
 
-	float SkillATKMin, SkillATKMax, SkillCRTMin, SkillCRTMax, SkillCRTValue = 0.0f;
-	float SkillMGKMin, SkillMGKMax, SkillMCRMin, SkillMCRMax, SkillMCRValue = 0.0f;
+	float SkillATKMin = 0.0f, SkillATKMax = 0.0f, SkillCRTMin = 0.0f, SkillCRTMax = 0.0f, SkillCRTValue = 0.0f;
+	float SkillMGKMin = 0.0f, SkillMGKMax = 0.0f, SkillMCRMin = 0.0f, SkillMCRMax = 0.0f, SkillMCRValue = 0.0f;
 
 	const UGameAbility* pAbility = Cast<UGameAbility>(Spec.GetContext().GetAbility());
 	if (pAbility != nullptr)
 	{
 		int32 skillID = pAbility->GetSkillID();
 		int32 levelID = pAbility->GetSkillLevel();
-
-		AActor* SourceActor = Cast<AActor>(Spec.GetContext().GetSourceObject());
 
 		if (SourceActor)
 		{
@@ -164,7 +162,7 @@ void UDamageExecutionCalculation::Execute_Implementation(const FGameplayEffectCu
 	}
 
 	// ×ÜÉËº¦
-	float Damage = AtkValue + MgkValue;
+	int Damage = AtkValue + MgkValue;
 	HP -= Damage;
 
 	OutExecutionOutput.AddOutputModifier(FGameplayModifierEvaluatedData(DamageStatics().HPProperty, EGameplayModOp::Additive, HP));

@@ -46,11 +46,18 @@ void UGameSkill::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const 
 
 		if (CommitAbility(Handle, ActorInfo, ActivationInfo))		// ..then commit the ability...
 		{
+			UAbilitySystemComponent* AbilitySystemComponent = GetAbilitySystemComponentFromActorInfo();
+
+			FGameplayTagContainer tagContainer;
+			for (auto & Pair : GEGroupMap)
+			{
+				tagContainer.AddTag(Pair.Key);
+			}
+			EventHandle = AbilitySystemComponent->AddGameplayEventTagContainerDelegate(tagContainer, FGameplayEventTagMulticastDelegate::FDelegate::CreateUObject(this, &UGameSkill::OnGameplayEvent));
 
 			UpdateAttribute();
 
 			UAnimInstance* AnimInstance = ActorInfo->GetAnimInstance();
-			UAbilitySystemComponent* AbilitySystemComponent = GetAbilitySystemComponentFromActorInfo();
 
 			if (MontageToPlay != nullptr && AnimInstance != nullptr)
 			{

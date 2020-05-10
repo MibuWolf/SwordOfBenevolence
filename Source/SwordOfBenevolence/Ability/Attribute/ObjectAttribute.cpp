@@ -2,7 +2,7 @@
 
 
 #include "ObjectAttribute.h"
-
+#include "GameplayEffectExtension.h"
 
 UObjectAttribute::UObjectAttribute()
 	: HP(100.0f)
@@ -25,13 +25,32 @@ void UObjectAttribute::PreAttributeChange(const FGameplayAttribute & Attribute, 
 		const float CurrentCurrentValue = MP.GetCurrentValue();
 		const float CurrentMaxMp = MaxMp.GetCurrentValue();
 
-		FMath::Clamp(NewValue, 0.0f, CurrentMaxMp);
+		NewValue = FMath::Clamp(NewValue, 0.0f, CurrentMaxMp);
+	}
+
+	if (Attribute == GetHPAttribute())
+	{
+
+		const float CurrentCurrentHP = HP.GetCurrentValue();
+		const float CurrentMaxHp = MaxHp.GetCurrentValue();
+
+		NewValue = FMath::Clamp(NewValue, 0.0f, CurrentMaxHp);
 	}
 }
 
 void UObjectAttribute::PostGameplayEffectExecute(const FGameplayEffectModCallbackData & Data)
 {
+	Super::PostGameplayEffectExecute(Data);
+	
+	if (Data.EvaluatedData.Attribute == GetHPAttribute())
+	{
+		SetHP(FMath::Clamp(GetHP(), 0.0f, GetMaxHp()));
+	}
 
+	if (Data.EvaluatedData.Attribute == GetMPAttribute())
+	{
+		SetMP(FMath::Clamp(GetMP(), 0.0f, GetMaxMp()));
+	}
 }
 
 void UObjectAttribute::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
