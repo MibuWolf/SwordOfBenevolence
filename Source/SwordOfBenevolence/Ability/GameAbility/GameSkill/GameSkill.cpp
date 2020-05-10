@@ -18,34 +18,59 @@ UGameSkill::UGameSkill()
 
 void UGameSkill::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo * ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData * TriggerEventData)
 {
-	if (!CommitAbility(Handle, ActorInfo, ActivationInfo))
+	if (bHasBlueprintActivate)
 	{
-		return;
+		// A Blueprinted ActivateAbility function must call CommitAbility somewhere in its execution chain.
+		K2_ActivateAbility();
 	}
-
-	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
-
-	UpdateAttribute();
-
-	UAnimInstance* AnimInstance = ActorInfo->GetAnimInstance();
-	UAbilitySystemComponent* AbilitySystemComponent = GetAbilitySystemComponentFromActorInfo();
-
-	if (MontageToPlay != nullptr && AnimInstance != nullptr)
+	else if (bHasBlueprintActivateFromEvent)
 	{
-		TArray<FActiveGameplayEffectHandle>	AppliedEffects;
-
-		float const Duration = AnimInstance->Montage_Play(MontageToPlay, PlayRate);
-		IsPlaying = true;
-
-		FOnMontageEnded EndDelegate;
-		EndDelegate.BindUObject(this, &UGameSkill::OnMontageEnded);
-		AnimInstance->Montage_SetEndDelegate(EndDelegate, MontageToPlay);
-
-		if (SectionName != NAME_None)
+		if (TriggerEventData)
 		{
-			AnimInstance->Montage_JumpToSection(SectionName);
+			// A Blueprinted ActivateAbility function must call CommitAbility somewhere in its execution chain.
+			K2_ActivateAbilityFromEvent(*TriggerEventData);
+		}
+		else
+		{
+			UE_LOG(LogAbilitySystem, Warning, TEXT("Ability %s expects event data but none is being supplied. Use Activate Ability instead of Activate Ability From Event."), *GetName());
+			bool bReplicateEndAbility = false;
+			bool bWasCancelled = true;
+			EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
 		}
 	}
+	else
+	{
+		// Native child classes may want to override ActivateAbility and do something like this:
+
+		// Do stuff...
+
+		if (CommitAbility(Handle, ActorInfo, ActivationInfo))		// ..then commit the ability...
+		{
+
+			UpdateAttribute();
+
+			UAnimInstance* AnimInstance = ActorInfo->GetAnimInstance();
+			UAbilitySystemComponent* AbilitySystemComponent = GetAbilitySystemComponentFromActorInfo();
+
+			if (MontageToPlay != nullptr && AnimInstance != nullptr)
+			{
+				TArray<FActiveGameplayEffectHandle>	AppliedEffects;
+
+				float const Duration = AnimInstance->Montage_Play(MontageToPlay, PlayRate);
+				IsPlaying = true;
+
+				FOnMontageEnded EndDelegate;
+				EndDelegate.BindUObject(this, &UGameSkill::OnMontageEnded);
+				AnimInstance->Montage_SetEndDelegate(EndDelegate, MontageToPlay);
+
+				if (SectionName != NAME_None)
+				{
+					AnimInstance->Montage_JumpToSection(SectionName);
+				}
+			}
+		}
+	}
+
 }
 
 void UGameSkill::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo * ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
@@ -75,9 +100,9 @@ void UGameSkill::OnMontageEnded(UAnimMontage * Montage, bool bInterrupted)
 	EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, bReplicateEndAbility, bWasCancelled);
 }
 
-void UGameSkill::SetLevel(int32 level)
+void UGameSkill::SetSkillLevel(int32 level)
 {
-	Super::SetLevel(level);
+	Super::SetSkillLevel(level);
 
 	UpdateAttribute();
 }

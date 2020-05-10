@@ -37,13 +37,17 @@ public:
 
 public:
 
-	// 设置当前技能等级
+	// 设置当前技能ID
 	UFUNCTION(BlueprintCallable, Category = GameObject)
-	virtual void		SetLevel(int32 level);
+	int32		GetSkillID() const;
 
 	// 设置当前技能等级
 	UFUNCTION(BlueprintCallable, Category = GameObject)
-	int32		GetLevel();
+	virtual void		SetSkillLevel(int32 level);
+
+	// 设置当前技能等级
+	UFUNCTION(BlueprintCallable, Category = GameObject)
+	int32		GetSkillLevel() const;
 
 protected:
 

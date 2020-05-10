@@ -32,7 +32,7 @@ public:
 public:
 
 	// 设置当前技能等级
-	virtual void		SetLevel(int32 lv);
+	virtual void		SetSkillLevel(int32 lv);
 
 
 protected:

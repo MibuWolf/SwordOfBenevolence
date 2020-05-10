@@ -64,12 +64,17 @@ void UGameAbility::OnAvatarSet(const FGameplayAbilityActorInfo * ActorInfo, cons
 	}
 }
 
-void UGameAbility::SetLevel(int32 level)
+int32 UGameAbility::GetSkillID() const
+{
+	return SkillID;
+}
+
+void UGameAbility::SetSkillLevel(int32 level)
 {
 	Level = level;
 }
 
-int32 UGameAbility::GetLevel()
+int32 UGameAbility::GetSkillLevel() const
 {
 	return Level;
 }

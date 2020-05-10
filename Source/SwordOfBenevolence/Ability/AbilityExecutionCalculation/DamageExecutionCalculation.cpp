@@ -1,7 +1,7 @@
 #include "DamageExecutionCalculation.h"
 #include "../GameAbilitySystemComponent.h"
 #include "../Attribute/ObjectAttribute.h"
-
+#include "../../GamePlay/SOBGameInstance.h"
 
 // 声明要捕获的属性，并定义我们如何从“源”和“目标”中捕获它们。
 struct SOBDamageStatics
@@ -59,6 +59,10 @@ UDamageExecutionCalculation::UDamageExecutionCalculation()
 	RelevantAttributesToCapture.Add(DamageStatics().MCRDef);
 }
 
+
+// 战斗计算公式  最终伤害  =  物理伤害   +   魔法伤害
+// 物理伤害 = ( 攻击力 - 防御力 ) + random(技能攻击力提升下限， 技能攻击力提升上限) + （暴击率 + random(技能提升暴击率提升下限， 技能提升暴击率上限)）* 暴击值提升
+// 魔法伤害 = ( 魔法攻击力 - 魔法防御力 ) + random(技能魔法攻击力提升下限， 技能魔法攻击力提升上限) + （魔法暴击率 + random(技能提升魔法暴击率提升下限， 技能魔法提升暴击率上限)）* 魔法暴击值提升
 void UDamageExecutionCalculation::Execute_Implementation(const FGameplayEffectCustomExecutionParameters & ExecutionParams, OUT FGameplayEffectCustomExecutionOutput & OutExecutionOutput) const
 {
 	UAbilitySystemComponent* TargetAbilitySystemComponent = ExecutionParams.GetTargetAbilitySystemComponent();
@@ -92,26 +96,77 @@ void UDamageExecutionCalculation::Execute_Implementation(const FGameplayEffectCu
 	// 血量
 	float HP = FMath::Max<float>(ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatics().HPDef, EvaluationParameters, HP), 0.0f);
 
+	float SkillATKMin, SkillATKMax, SkillCRTMin, SkillCRTMax, SkillCRTValue = 0.0f;
+	float SkillMGKMin, SkillMGKMax, SkillMCRMin, SkillMCRMax, SkillMCRValue = 0.0f;
+
+	const UGameAbility* pAbility = Cast<UGameAbility>(Spec.GetContext().GetAbility());
+	if (pAbility != nullptr)
+	{
+		int32 skillID = pAbility->GetSkillID();
+		int32 levelID = pAbility->GetSkillLevel();
+
+		AActor* SourceActor = Cast<AActor>(Spec.GetContext().GetSourceObject());
+
+		if (SourceActor)
+		{
+			UWorld* pWorld = SourceActor->GetWorld();
+			if (pWorld)
+			{
+				USOBGameInstance* pGameInstance = Cast<USOBGameInstance>(pWorld->GetGameInstance());
+
+				if (pGameInstance)
+				{
+					FString strSkillID = FString::FromInt(skillID);
+					FSkillTableData* pSkillTable = pGameInstance->GetSkillTableData(strSkillID);
+
+					if (pSkillTable)
+					{
+						FString skillLevelID = pSkillTable->AttributeID + FString::FromInt(levelID);
+
+						FSkillAttributeTableData* pSkillAttributeTable = pGameInstance->GetSkillAttributeTableData(skillLevelID);
+
+						if (pSkillAttributeTable)
+						{
+							SkillATKMin = pSkillAttributeTable->ATKMin;			SkillATKMax = pSkillAttributeTable->ATKMax;		SkillCRTMin = pSkillAttributeTable->CRTMin;
+							SkillCRTMax = pSkillAttributeTable->CRTMax;			SkillCRTValue = pSkillAttributeTable->CRTValue;
+
+							SkillMGKMin = pSkillAttributeTable->MGKMin;			SkillMGKMax = pSkillAttributeTable->MGKMax;		SkillMCRMin = pSkillAttributeTable->MCRMin;
+							SkillMCRMax = pSkillAttributeTable->MCRMax;			SkillMCRValue = pSkillAttributeTable->MCRValue;
+						}
+					}
+
+
+				}
+			}
+		}
+	}
+
 	//计算物理伤害
 	float AtkValue = FMath::Max<float>((Atk - Def), 0.0f);
+	AtkValue += FMath::FRandRange(SkillATKMin, SkillATKMax);
+
+	// 物理暴击率
+	Crt += FMath::FRandRange(SkillCRTMin, SkillCRTMax);
 	if (Crt > FMath::RandHelper(10000))
 	{
-		AtkValue += Atk * FMath::RandRange(0.5f, 1.5f);
+		AtkValue += Atk * SkillCRTValue;
 	}
 
 	//计算魔法伤害
 	float MgkValue = FMath::Max<float>((Mgk - Rgs), 0.0f);
+	MgkValue += FMath::FRandRange(SkillMGKMin, SkillMGKMax);
+
+	// 法术暴击率
+	Mcr += FMath::FRandRange(SkillMCRMin, SkillMCRMax);
 	if (Mcr > FMath::RandHelper(10000))
 	{
-		MgkValue += Mgk * FMath::RandRange(0.5f, 1.5f);
+		MgkValue += Mgk * SkillMCRValue;
 	}
 
 	// 总伤害
 	float Damage = AtkValue + MgkValue;
 	HP -= Damage;
-	HP = FMath::Max<float>(HP, 0.0f);
 
 	OutExecutionOutput.AddOutputModifier(FGameplayModifierEvaluatedData(DamageStatics().HPProperty, EGameplayModOp::Additive, HP));
-
 
 }

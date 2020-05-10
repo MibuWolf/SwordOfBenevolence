@@ -46,6 +46,8 @@ enum class EAttributeType : uint8
 	AGI				UMETA(DisplayName = "AGI"),
 	// MGK		魔法伤害
 	MGK				UMETA(DisplayName = "MGK"),
+	// MCR		魔法暴击率
+	MCR				UMETA(DisplayName = "MCR"),
 	// RGS		魔法防御
 	RGS				UMETA(DisplayName = "RGS"),
 	// WIS		智力(影响魔法伤害)

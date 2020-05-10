@@ -31,6 +31,7 @@ void UObjectAttribute::PreAttributeChange(const FGameplayAttribute & Attribute, 
 
 void UObjectAttribute::PostGameplayEffectExecute(const FGameplayEffectModCallbackData & Data)
 {
+
 }
 
 void UObjectAttribute::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
