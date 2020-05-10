@@ -106,10 +106,10 @@ void AGamePlayerController::OnMoveForwardEvent(float Value)
 			return;
 
 		FGameplayTagContainer tagContainer;
-		//tagContainer.AddTag(FGameplayTag::RequestGameplayTag("State.Dead"));
-		//tagContainer.AddTag(FGameplayTag::RequestGameplayTag("State.Skill"));
+		tagContainer.AddTag(FGameplayTag::RequestGameplayTag("Status.Dead"));
+		tagContainer.AddTag(FGameplayTag::RequestGameplayTag("Status.Skill"));
 		//tagContainer.AddTag(FGameplayTag::RequestGameplayTag("Buff.NoMove"));
-		//tagContainer.AddTag(FGameplayTag::RequestGameplayTag("Buff.Stun"));
+		tagContainer.AddTag(FGameplayTag::RequestGameplayTag("Buff.Stun"));
 
 		if (AbilitySystemComponent->HasAnyMatchingGameplayTags(tagContainer))
 			return;
@@ -141,10 +141,10 @@ void AGamePlayerController::OnMoveRightEvent(float Value)
 			return;
 
 		FGameplayTagContainer tagContainer;
-		//tagContainer.AddTag(FGameplayTag::RequestGameplayTag("State.Dead"));
-		//tagContainer.AddTag(FGameplayTag::RequestGameplayTag("State.Skill"));
+		tagContainer.AddTag(FGameplayTag::RequestGameplayTag("Status.Dead"));
+		tagContainer.AddTag(FGameplayTag::RequestGameplayTag("Status.Skill"));
 		//tagContainer.AddTag(FGameplayTag::RequestGameplayTag("Buff.NoMove"));
-		//tagContainer.AddTag(FGameplayTag::RequestGameplayTag("Buff.Stun"));
+		tagContainer.AddTag(FGameplayTag::RequestGameplayTag("Buff.Stun"));
 
 		if (AbilitySystemComponent->HasAnyMatchingGameplayTags(tagContainer))
 			return;

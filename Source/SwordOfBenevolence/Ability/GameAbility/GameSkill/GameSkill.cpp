@@ -13,7 +13,7 @@ UGameSkill::UGameSkill()
 	:Super()
 {
 	// 定义激活技能时设置状态标签State.Skill
-	//ActivationOwnedTags.AddTag(FGameplayTag::RequestGameplayTag(FName("State.Skill")));
+	ActivationOwnedTags.AddTag(FGameplayTag::RequestGameplayTag(FName("Status.Skill")));
 }
 
 void UGameSkill::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo * ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData * TriggerEventData)

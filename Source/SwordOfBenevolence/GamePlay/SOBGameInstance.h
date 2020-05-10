@@ -3,11 +3,13 @@
 #pragma once
 #include "Engine/DataTable.h"
 #include "Engine/GameInstance.h"
+#include "../HUD/UIManager.h"
 #include "../DataTable/AttributeTableData.h"
 #include "../DataTable/CharacterLevelTableData.h"
 #include "../DataTable/MonsterTableData.h"
 #include "../DataTable/NPCTableData.h"
 #include "../DataTable/SkillTableData.h"
+#include "../DataTable/UIViewTableData.h"
 #include "../DataTable/SkillAttributeTableData.h"
 #include "SOBGameInstance.generated.h"
 
@@ -31,6 +33,10 @@ class SWORDOFBENEVOLENCE_API USOBGameInstance : public UGameInstance
 
 public:
 
+	virtual void Init();
+
+public:
+
 	// Constructor
 	USOBGameInstance();
 
@@ -46,10 +52,30 @@ public:
 	TABLEDATA_INTERFACE(Skill);
 	// Skill属性表
 	TABLEDATA_INTERFACE(SkillAttribute);
+	// UI配置表
+	TABLEDATA_INTERFACE(UIView);
+
+public:
+
+	// 控制UI显示
+	UFUNCTION(BlueprintCallable, Category = UI)
+	void	ShowUIView(FString ViewName);
+
+	// 控制UI隐藏
+	UFUNCTION(BlueprintCallable, Category = UI)
+	void	HideUIView(FString ViewName);
+
+	// 控制UI销毁
+	UFUNCTION(BlueprintCallable, Category = UI)
+	void	DestoryUIView(FString ViewName);
 
 protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = DataTableConfig)
 	TMap<FString, UDataTable*>			AllTableConfig;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = GamePlayerController)
+	TSubclassOf<UUIManager>	UIViewManager;	// UI管理器
+
+	UUIManager*				pUIViewManager = nullptr;
 };
