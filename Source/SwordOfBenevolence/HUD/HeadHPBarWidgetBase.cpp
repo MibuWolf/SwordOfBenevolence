@@ -27,8 +27,8 @@ void UHeadHPBarWidgetBase::Initialization(AGameObject* pOwner)
 	SetCurrentMP(pAttribute->MP.GetCurrentValue());
 	SetMaxMP(pAttribute->MaxMp.GetCurrentValue());
 
-	LevelHandle = Owner->GetLevelChangeDelegate().AddUObject(this, &UHeadHPBarWidgetBase::OnLevelChanged);
-	NameHandle = Owner->GetNameChangeDelegate().AddUObject(this, &UHeadHPBarWidgetBase::OnNameChanged);
+	//Owner->LevelChangedHandle.AddDynamic(this, &UHeadHPBarWidgetBase::OnLevelChanged);
+	//Owner->NameChangedHandle.AddDynamic(this, &UHeadHPBarWidgetBase::OnNameChanged);
 }
 
 
@@ -47,8 +47,8 @@ void UHeadHPBarWidgetBase::EndPlay(const EEndPlayReason::Type EndPlayReason)
 		pAbilityComponent->GetGameplayAttributeValueChangeDelegate(pAttribute->GetMaxMpAttribute()).Remove(MaxMPEventHandle);
 	}
 
-	Owner->GetLevelChangeDelegate().Remove(LevelHandle);
-	Owner->GetNameChangeDelegate().Remove(NameHandle);
+	//Owner->LevelChangedHandle.RemoveDynamic(this, &UHeadHPBarWidgetBase::OnLevelChanged);
+	//Owner->NameChangedHandle.RemoveDynamic(this, &UHeadHPBarWidgetBase::OnNameChanged);
 }
 
 void UHeadHPBarWidgetBase::OnLevelChanged(const int32 & oldLevel, const int32 & newLevel)

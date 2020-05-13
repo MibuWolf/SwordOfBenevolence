@@ -66,7 +66,5 @@ protected:
 	FDelegateHandle MaxHPEventHandle;
 	FDelegateHandle MPEventHandle;
 	FDelegateHandle MaxMPEventHandle;
-	FDelegateHandle LevelHandle;
-	FDelegateHandle NameHandle;
 
 };

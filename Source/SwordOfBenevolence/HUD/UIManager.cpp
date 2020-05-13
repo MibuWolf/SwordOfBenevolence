@@ -33,7 +33,7 @@ void UUIManager::ShowView(FString ViewName)
 		UClass* loadObj = StaticLoadClass(UViewBase::StaticClass(), NULL, *uiPath);
 		if (loadObj != nullptr)
 		{
-			UViewBase* pUIView = loadObj->GetDefaultObject <UViewBase>();
+			UViewBase* pUIView = CreateWidget<UViewBase>(pGameInstance, loadObj);
 
 			if (pUIView != nullptr)
 			{

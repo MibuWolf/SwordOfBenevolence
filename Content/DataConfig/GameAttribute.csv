@@ -1,0 +1,20 @@
+,STR,VIT,TEN,AGI,WIS,WIL ,SPT,CTN
+Desc,"力量（10点力量增
+加1点攻击力）","耐力（10点耐力增
+加1点防御力）","韧性（10点韧性增
+加1点最大血量）","敏捷(10点敏捷增
+加1点物理暴击率)","智力（10点智力增
+加1点法术伤害）","意志(10点意志增
+加1点最大蓝量)","精神（10点精神增
+加1点法术防御）","专注(10点专注增
+加1点法术暴击率)"
+CharacterLevel1,1,1,1,1,1,1,1,1
+CharacterLevel2,2,2,2,2,2,2,2,2
+CharacterLevel3,3,3,3,3,3,3,3,3
+CharacterLevel4,4,4,4,4,4,4,4,4
+CharacterLevel5,5,5,5,5,5,5,5,5
+CharacterLevel6,6,6,6,6,6,6,6,6
+CharacterLevel7,7,7,7,7,7,7,7,7
+CharacterLevel8,8,8,8,8,8,8,8,8
+CharacterLevel9,9,9,9,9,9,9,9,9
+CharacterLevel10,10,10,10,10,10,10,10,10

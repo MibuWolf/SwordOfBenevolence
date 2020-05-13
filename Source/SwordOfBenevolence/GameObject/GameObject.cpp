@@ -35,8 +35,6 @@ void AGameObject::BeginPlay()
 {
 	Super::BeginPlay();
 
-	SetLevel(Level);
-
 	// 技能/能力初始化
 	if (AbilitySystemComponent != nullptr)
 	{
@@ -46,6 +44,8 @@ void AGameObject::BeginPlay()
 		FGameplayTagContainer tagContainer;
 		tagContainer.AddTag(FGameplayTag::RequestGameplayTag(FName(*SkillTag)));
 		EventHandle = AbilitySystemComponent->RegisterGameplayTagEvent(FGameplayTag::RequestGameplayTag(FName(*SkillTag))).AddUObject(this, &AGameObject::OnGameplayTagCallback);*/
+
+		InitAllAttributeChangedHandle();
 	}
 
 	UWorld* pWorld = GetWorld(); // get a reference to the world 
@@ -74,6 +74,9 @@ void AGameObject::BeginPlay()
 			HUDComponent->SetWidget(HeadHPBar);
 		}
 	}
+
+	SetLevel(Level);
+
 }
 
 void AGameObject::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -107,16 +110,6 @@ UObjectAttribute * AGameObject::GetAttribute()
 UAbilitySystemComponent * AGameObject::GetAbilitySystemComponent() const
 {
 	return AbilitySystemComponent;
-}
-
-FGameObjectLevelChangedHandle AGameObject::GetLevelChangeDelegate()
-{
-	return LevelChangedHandle;
-}
-
-FGameObjectNameChangedHandle AGameObject::GetNameChangeDelegate()
-{
-	return NameChangedHandle;
 }
 
 FVector AGameObject::GetDirction()
@@ -161,6 +154,30 @@ void AGameObject::TakeOffEquip(EEquipType type)
 	}
 }
 
+void AGameObject::InitAllAttributeChangedHandle()
+{
+	/*AllAttributeChangeHandle.Add(EAttributeType::HP, AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Attribute->GetHPAttribute()).AddUObject(this, &AGameObject::OnAttributeChanged));
+	AllAttributeChangeHandle.Add(EAttributeType::MaxHp, AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Attribute->GetMaxHpAttribute()).AddUObject(this, &AGameObject::OnAttributeChanged));
+	AllAttributeChangeHandle.Add(EAttributeType::MP, AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Attribute->GetMPAttribute()).AddUObject(this, &AGameObject::OnAttributeChanged));
+	AllAttributeChangeHandle.Add(EAttributeType::MaxMp, AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Attribute->GetMaxMpAttribute()).AddUObject(this, &AGameObject::OnAttributeChanged));
+	AllAttributeChangeHandle.Add(EAttributeType::ATK, AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Attribute->GetATKAttribute()).AddUObject(this, &AGameObject::OnAttributeChanged));
+	AllAttributeChangeHandle.Add(EAttributeType::DEF, AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Attribute->GetDEFAttribute()).AddUObject(this, &AGameObject::OnAttributeChanged));
+	AllAttributeChangeHandle.Add(EAttributeType::CRT, AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Attribute->GetCRTAttribute()).AddUObject(this, &AGameObject::OnAttributeChanged));
+	AllAttributeChangeHandle.Add(EAttributeType::STR, AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Attribute->GetSTRAttribute()).AddUObject(this, &AGameObject::OnAttributeChanged));
+	AllAttributeChangeHandle.Add(EAttributeType::VIT, AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Attribute->GetVITAttribute()).AddUObject(this, &AGameObject::OnAttributeChanged));
+	AllAttributeChangeHandle.Add(EAttributeType::TEN, AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Attribute->GetTENAttribute()).AddUObject(this, &AGameObject::OnAttributeChanged));
+	AllAttributeChangeHandle.Add(EAttributeType::AGI, AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Attribute->GetAGIAttribute()).AddUObject(this, &AGameObject::OnAttributeChanged));
+	AllAttributeChangeHandle.Add(EAttributeType::MGK, AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Attribute->GetMGKAttribute()).AddUObject(this, &AGameObject::OnAttributeChanged));
+	AllAttributeChangeHandle.Add(EAttributeType::MCR, AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Attribute->GetMCRAttribute()).AddUObject(this, &AGameObject::OnAttributeChanged));
+	AllAttributeChangeHandle.Add(EAttributeType::RGS, AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Attribute->GetRGSAttribute()).AddUObject(this, &AGameObject::OnAttributeChanged));
+	AllAttributeChangeHandle.Add(EAttributeType::WIS, AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Attribute->GetWISAttribute()).AddUObject(this, &AGameObject::OnAttributeChanged));
+	AllAttributeChangeHandle.Add(EAttributeType::SPT, AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Attribute->GetSPTAttribute()).AddUObject(this, &AGameObject::OnAttributeChanged));
+	AllAttributeChangeHandle.Add(EAttributeType::CTN, AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Attribute->GetCTNAttribute()).AddUObject(this, &AGameObject::OnAttributeChanged));
+	AllAttributeChangeHandle.Add(EAttributeType::SPD, AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Attribute->GetSPDAttribute()).AddUObject(this, &AGameObject::OnAttributeChanged));
+	AllAttributeChangeHandle.Add(EAttributeType::CON, AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Attribute->GetCONAttribute()).AddUObject(this, &AGameObject::OnAttributeChanged));
+	AllAttributeChangeHandle.Add(EAttributeType::EXP, AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Attribute->GetEXPAttribute()).AddUObject(this, &AGameObject::OnAttributeChanged));
+	AllAttributeChangeHandle.Add(EAttributeType::MAXEXP, AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Attribute->GetMAXEXPAttribute()).AddUObject(this, &AGameObject::OnAttributeChanged));*/
+}
 
 void AGameObject::OnGameplayTagCallback(const FGameplayTag InTag, int32 NewCount)
 {
@@ -189,4 +206,10 @@ void		AGameObject::SetName(FString NewName)
 FString		AGameObject::GetName()
 {
 	return Name;
+}
+
+
+void AGameObject::OnAttributeChanged(const FOnAttributeChangeData & CallbackData)
+{
+	AttributeChangedHandle.Broadcast(CallbackData.Attribute, CallbackData.OldValue, CallbackData.NewValue);
 }

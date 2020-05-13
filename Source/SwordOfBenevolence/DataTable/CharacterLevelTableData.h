@@ -10,5 +10,9 @@ struct FCharacterLevelTableData : public FTableRowBase
 public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = AttributeTableData)
-	FString AttributeID;
+	FString BaseAttribute;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = AttributeTableData)
+	FString GameAttribute;
+
 };

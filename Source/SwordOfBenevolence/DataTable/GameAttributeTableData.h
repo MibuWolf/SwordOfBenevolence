@@ -1,39 +1,29 @@
 #pragma once
 #include "CoreMinimal.h"
 #include "Engine/DataTable.h"
-#include "SkillAttributeTableData.generated.h"
+#include "GameAttributeTableData.generated.h"
 
 USTRUCT()
-struct FSkillAttributeTableData : public FTableRowBase
+struct FGameAttributeTableData : public FTableRowBase
 {
 	GENERATED_USTRUCT_BODY()
 public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = AttributeTableData)
-	int32 CD;
+		int32 STR;			// 力量
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = AttributeTableData)
-	int32 MP;
+		int32 VIT;			// 耐力
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = AttributeTableData)
-	int32 ATKMin;
+		int32 TEN;			// 韧性
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = AttributeTableData)
-	int32 ATKMax;
+		int32 AGI;			// 敏捷
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = AttributeTableData)
-	int32 CRTMin;
+		int32 WIS;			// 智力
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = AttributeTableData)
-	int32 CRTMax;
+		int32 SPT;			// 精神
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = AttributeTableData)
-	int32 CRTValue;
+		int32 CTN;			// 专注
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = AttributeTableData)
-	int32 MGKMin;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = AttributeTableData)
-	int32 MGKMax;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = AttributeTableData)
-	int32 MCRMin;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = AttributeTableData)
-	int32 MCRMax;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = AttributeTableData)
-	int32 MCRValue;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = AttributeTableData)
-	int32 ASD;
+		int32 WIL;			// 意志
 
 };

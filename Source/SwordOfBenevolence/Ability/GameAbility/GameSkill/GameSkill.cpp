@@ -6,7 +6,8 @@
 #include "AbilitySystemComponent.h"
 #include "../../../GamePlay/SOBGameInstance.h"
 #include "../../../DataTable/SkillTableData.h"
-#include "../../../DataTable/AttributeTableData.h"
+#include "../../../DataTable/SkillAttributeTableData.h"
+#include "../../../DataTable/BaseAttributeTableData.h"
 
 
 UGameSkill::UGameSkill()
@@ -172,10 +173,10 @@ void UGameSkill::UpdateAttribute()
 	FString strLevel = FString::FromInt(Level);
 	FString attributeID = pSkill->AttributeID + strLevel;
 
-	FAttributeTableData* pAttribute = pGameInstance->GetAttributeTableData(attributeID);
+	FSkillAttributeTableData* pSkillAttribute = pGameInstance->GetSkillAttributeTableData(attributeID);
 
-	if (pAttribute == nullptr)
+	if (pSkillAttribute == nullptr)
 		return;
 
-	PlayRate = float(pAttribute->SPD) / 100.0f;
+	PlayRate = float(pSkillAttribute->ASD) / 100.0f;
 }

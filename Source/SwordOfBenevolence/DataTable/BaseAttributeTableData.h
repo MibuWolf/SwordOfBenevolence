@@ -1,47 +1,37 @@
 #pragma once
 #include "CoreMinimal.h"
 #include "Engine/DataTable.h"
-#include "AttributeTableData.generated.h"
+#include "BaseAttributeTableData.generated.h"
 
 USTRUCT()
-struct FAttributeTableData : public FTableRowBase
+struct FBaseAttributeTableData : public FTableRowBase
 {
 	GENERATED_USTRUCT_BODY()
 public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = AttributeTableData)
-	int32 MaxHp;
+	int32 MaxHp;		// 血量最大值
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = AttributeTableData)
-	int32 MaxMp;
+	int32 MaxMp;		// 魔法量最大值
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = AttributeTableData)
-	int32 ATK;
+	int32 ATK;			// 攻击力
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = AttributeTableData)
-	int32 DEF;
+	int32 DEF;			// 防御力
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = AttributeTableData)
-	int32 CRT;
+	int32 CRT;			// 暴击率
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = AttributeTableData)
-	int32 STR;
+	int32 CHD;			// 暴击伤害
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = AttributeTableData)
-	int32 VIT;
+	int32 MGK;			// 魔法伤害
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = AttributeTableData)
-	int32 TEN;
+	int32 RGS;			// 魔法防御
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = AttributeTableData)
-	int32 AGI;
+	int32 MCR;			// 魔法暴击率
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = AttributeTableData)
-	int32 MGK;
+	int32 MCD;			// 魔法暴击伤害
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = AttributeTableData)
-	int32 RGS;
+	int32 SPD;			// 移动速度
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = AttributeTableData)
-	int32 WIS;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = AttributeTableData)
-	int32 SPT;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = AttributeTableData)
-	int32 CTN;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = AttributeTableData)
-	int32 SPD;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = AttributeTableData)
-	int32 CON;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = AttributeTableData)
-	int32 EXP;
+	int32 EXP;			// 升级所需经验值
 
 };

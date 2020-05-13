@@ -3,9 +3,10 @@
 
 #include "GamePlayer.h"
 #include "../../Ability/AbilityInputID.h"
-#include "../../GamePlay/SOBGameInstance.h"
-#include "../../DataTable/AttributeTableData.h"
+#include "../../DataTable/BaseAttributeTableData.h"
+#include "../../DataTable/GameAttributeTableData.h"
 #include "../../DataTable/CharacterLevelTableData.h"
+#include "../../Ability/Attribute/PlayerAttribute.h"
 // Sets default values
 AGamePlayer::AGamePlayer()
 	:Super()
@@ -99,55 +100,16 @@ void AGamePlayer::SetLevel(int32 level)
 	int32 oldLevel = Level;
 	Super::SetLevel(level);
 
-	UpdateBasicAttribute();
+	UPlayerAttribute* playerAttribute = Cast<UPlayerAttribute>(Attribute);
+
+	if (playerAttribute)
+		playerAttribute->InitializeByPlayerLevel(level);
 
 	LevelChangedHandle.Broadcast(oldLevel, Level);
 }
 
 void AGamePlayer::UpdateBasicAttribute()
 {
-	UWorld* pWorld = GetWorld();
-	if (!pWorld)
-		return;
-
-	USOBGameInstance* pGameInstance = Cast<USOBGameInstance>(pWorld->GetGameInstance());
-
-	if (pGameInstance == nullptr || Attribute == nullptr)
-		return;
-
-	FString characterLevel = FString::FromInt(Level);
-	FCharacterLevelTableData* pCharacterLevel = pGameInstance->GetCharacterLevelTableData(characterLevel);
-	if (pCharacterLevel == nullptr)
-		return;
-
-	FAttributeTableData* pAttribute = pGameInstance->GetAttributeTableData(pCharacterLevel->AttributeID);
-	if (pAttribute == nullptr)
-		return;
-
-	Attribute->MaxHp = pAttribute->MaxHp;
-	Attribute->HP = pAttribute->MaxHp;
-	Attribute->MaxMp = pAttribute->MaxMp;
-	Attribute->MP = pAttribute->MaxMp;
-	Attribute->ATK = pAttribute->ATK;
-	Attribute->DEF = pAttribute->DEF;
-	Attribute->CRT = pAttribute->CRT;
-	Attribute->STR = pAttribute->STR;
-	Attribute->VIT = pAttribute->VIT;
-	Attribute->TEN = pAttribute->TEN;
-	Attribute->AGI = pAttribute->AGI;
-	Attribute->MGK = pAttribute->MGK;
-	Attribute->RGS = pAttribute->RGS;
-	Attribute->WIS = pAttribute->WIS;
-	Attribute->SPT = pAttribute->SPT;
-	Attribute->CTN = pAttribute->CTN;
-	Attribute->SPD = pAttribute->SPD;
-	Attribute->CON = pAttribute->CON;
-
-	if (Attribute->CUREXP.GetBaseValue() >= Attribute->EXP.GetBaseValue())
-	{
-		Attribute->CUREXP.SetBaseValue(Attribute->CUREXP.GetBaseValue() - Attribute->EXP.GetBaseValue());
-		Attribute->CUREXP.SetCurrentValue(Attribute->CUREXP.GetBaseValue() - Attribute->EXP.GetBaseValue());
-	}
-	Attribute->EXP = pAttribute->EXP;
+	
 }
 

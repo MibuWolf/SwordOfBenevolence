@@ -12,8 +12,9 @@
 #include "GameObject.generated.h"
 
 
-DECLARE_MULTICAST_DELEGATE_TwoParams(FGameObjectLevelChangedHandle, const int32&, const int32&);
-DECLARE_MULTICAST_DELEGATE_TwoParams(FGameObjectNameChangedHandle, const FString&, const FString&);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FGameObjectLevelChangedHandle, const int32&, oldLevel, const int32&, NewLevel);// DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams是唯一一个可以在蓝图中使用的代理
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FGameObjectNameChangedHandle, const FString&, oldName, const FString&, NewName);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FObjectAttributeChangedHandle, const FGameplayAttribute&, Attribute, float, OldValue, float, NewValue);
 
 UCLASS()
 class SWORDOFBENEVOLENCE_API AGameObject : public ACharacter, public IAbilitySystemInterface
@@ -43,11 +44,7 @@ public:
 	// Implement IAbilitySystemInterface
 	UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 
-	// 等级变更回调
-	FGameObjectLevelChangedHandle		GetLevelChangeDelegate();
-
-	// 名字变更回调
-	FGameObjectNameChangedHandle		GetNameChangeDelegate();
+	void OnAttributeChanged(const FOnAttributeChangeData & CallbackData);
 
 public:
 
@@ -88,12 +85,26 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 	void OnAttacked(const FGameplayTag& DamageTags);
 
-
 protected:
 
+	void InitAllAttributeChangedHandle();
 
 	void OnGameplayTagCallback(const FGameplayTag InTag, int32 NewCount);
 
+
+public:
+
+	// 等级变更
+	UPROPERTY(BlueprintAssignable, Category = GameObject)
+	FGameObjectLevelChangedHandle LevelChangedHandle;
+
+	// 名称变更
+	UPROPERTY(BlueprintAssignable, Category = GameObject)
+	FGameObjectNameChangedHandle  NameChangedHandle;
+
+	// 属性变更
+	UPROPERTY(BlueprintAssignable, Category = GameObject)
+	FObjectAttributeChangedHandle AttributeChangedHandle;
 
 protected:
 
@@ -130,6 +141,7 @@ protected:
 	UPROPERTY(EditAnywhere)
 	FString		Name;
 
+
 protected:
 
 	// 用于动作表现的朝向
@@ -138,8 +150,8 @@ protected:
 	// 当前装备的所有装备
 	TMap<EEquipType, AGameEquip*> Equips;
 
+	TMap<EAttributeType, FDelegateHandle> AllAttributeChangeHandle;
+
 	FDelegateHandle EventHandle;
 
-	FGameObjectLevelChangedHandle LevelChangedHandle;
-	FGameObjectNameChangedHandle  NameChangedHandle;
 };

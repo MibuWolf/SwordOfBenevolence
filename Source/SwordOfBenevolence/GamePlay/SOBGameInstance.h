@@ -4,7 +4,8 @@
 #include "Engine/DataTable.h"
 #include "Engine/GameInstance.h"
 #include "../HUD/UIManager.h"
-#include "../DataTable/AttributeTableData.h"
+#include "../DataTable/BaseAttributeTableData.h"
+#include "../DataTable/GameAttributeTableData.h"
 #include "../DataTable/CharacterLevelTableData.h"
 #include "../DataTable/MonsterTableData.h"
 #include "../DataTable/NPCTableData.h"
@@ -40,8 +41,10 @@ public:
 	// Constructor
 	USOBGameInstance();
 
-	// 属性表
-	TABLEDATA_INTERFACE(Attribute);
+	// 基础属性表
+	TABLEDATA_INTERFACE(BaseAttribute);
+	// 游戏属性表(二级属性)
+	TABLEDATA_INTERFACE(GameAttribute);
 	// 角色等级表
 	TABLEDATA_INTERFACE(CharacterLevel);
 	// 怪物表
