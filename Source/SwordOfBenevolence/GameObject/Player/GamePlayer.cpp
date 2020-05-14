@@ -37,6 +37,8 @@ AGamePlayer::AGamePlayer()
 	camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	camera->SetupAttachment(springArm);
 	camera->bUsePawnControlRotation = false;
+
+	Attribute = CreateDefaultSubobject<UPlayerAttribute>(TEXT("UPlayerAttribute"));
 }
 
 // Called when the game starts or when spawned
@@ -59,7 +61,7 @@ void AGamePlayer::BeginPlay()
 		playerController->SetActionOperationMode(false);
 	}
 
-	SetLevel(Level);
+	InitPlayerAttribute();
 }
 
 // Called every frame
@@ -108,8 +110,30 @@ void AGamePlayer::SetLevel(int32 level)
 	LevelChangedHandle.Broadcast(oldLevel, Level);
 }
 
-void AGamePlayer::UpdateBasicAttribute()
+void AGamePlayer::InitPlayerAttribute()
 {
-	
+	UPlayerAttribute* playerAttribute = Cast<UPlayerAttribute>(Attribute);
+
+	if (playerAttribute)
+	{
+		playerAttribute->InitializeByPlayerLevel(Level);
+
+		AttributeChangedHandle.Broadcast(Attribute->GetHPAttribute(), 0.0f, Attribute->GetHP());
+		AttributeChangedHandle.Broadcast(Attribute->GetMaxHpAttribute(), 0.0f, Attribute->GetMaxHp());
+		AttributeChangedHandle.Broadcast(Attribute->GetMPAttribute(), 0.0f, Attribute->GetMP());
+		AttributeChangedHandle.Broadcast(Attribute->GetMaxMpAttribute(), 0.0f, Attribute->GetMaxMp());
+		AttributeChangedHandle.Broadcast(Attribute->GetATKAttribute(), 0.0f, Attribute->GetATK());
+		AttributeChangedHandle.Broadcast(Attribute->GetDEFAttribute(), 0.0f, Attribute->GetDEF());
+		AttributeChangedHandle.Broadcast(Attribute->GetCRTAttribute(), 0.0f, Attribute->GetCRT());
+		AttributeChangedHandle.Broadcast(Attribute->GetCHDAttribute(), 0.0f, Attribute->GetCHD());
+		AttributeChangedHandle.Broadcast(Attribute->GetMGKAttribute(), 0.0f, Attribute->GetMGK());
+		AttributeChangedHandle.Broadcast(Attribute->GetMCRAttribute(), 0.0f, Attribute->GetMCR());
+		AttributeChangedHandle.Broadcast(Attribute->GetRGSAttribute(), 0.0f, Attribute->GetRGS());
+		AttributeChangedHandle.Broadcast(Attribute->GetMCDAttribute(), 0.0f, Attribute->GetMCD());
+		AttributeChangedHandle.Broadcast(Attribute->GetSPDAttribute(), 0.0f, Attribute->GetSPD());
+		AttributeChangedHandle.Broadcast(Attribute->GetATSAttribute(), 0.0f, Attribute->GetATS());
+		AttributeChangedHandle.Broadcast(Attribute->GetEXPAttribute(), 0.0f, 0.0f);
+		AttributeChangedHandle.Broadcast(Attribute->GetMAXEXPAttribute(), 0.0f, Attribute->GetMAXEXP());
+	}
 }
 

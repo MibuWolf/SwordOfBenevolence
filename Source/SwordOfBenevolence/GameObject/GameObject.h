@@ -123,11 +123,6 @@ protected:
 	/** 能力系统 */
 	UPROPERTY(VisibleAnywhere)
 	UGameAbilitySystemComponent* AbilitySystemComponent;
-
-	/**属性*/
-	UPROPERTY(EditAnywhere)
-	UObjectAttribute*	Attribute;
-	//UGDAttributeSetBase* Attribute;
 	
 	// 装备列表
 	UPROPERTY(EditAnywhere)
@@ -146,6 +141,9 @@ protected:
 
 	// 用于动作表现的朝向
 	FVector		Dirction;
+
+	/**属性*/
+	UObjectAttribute*	Attribute;
 	
 	// 当前装备的所有装备
 	TMap<EEquipType, AGameEquip*> Equips;
