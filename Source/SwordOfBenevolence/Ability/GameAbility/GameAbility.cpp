@@ -2,7 +2,8 @@
 
 
 #include "GameAbility.h"
-#include "AbilitySystemComponent.h"
+#include "../../GameObject/GameObject.h"
+#include "../GameAbilitySystemComponent.h"
 
 UGameAbility::UGameAbility()
 	:Super()
@@ -101,4 +102,42 @@ void UGameAbility::OnGameplayEvent(FGameplayTag EventTag, const FGameplayEventDa
 	{
 		BP_ApplyGameplayEffectToTarget(targetHandle, GameEffect);
 	}
+
+	FGameplayTagContainer tagContainer;
+	tagContainer.AddTag(FGameplayTag::RequestGameplayTag("Ability.Damage"));
+
+	if (EventTag.MatchesAny(tagContainer))
+	{
+		TriggerDamageEvent(EventTag, targetHandle);
+	}
+}
+
+void UGameAbility::TriggerDamageEvent(FGameplayTag EventTag, FGameplayAbilityTargetDataHandle & TargetDataHandle)
+{
+	AActor* OwningActor = GetOwningActorFromActorInfo();
+
+	for (TSharedPtr<FGameplayAbilityTargetData> Data : TargetDataHandle.Data)
+	{
+		if (Data.IsValid())
+		{
+			FGameplayAbilityTargetData* TargetData = Data.Get();
+
+			if (TargetData)
+			{
+				for (TWeakObjectPtr<AActor> Actor : TargetData->GetActors())
+				{
+					AGameObject* pGameObject = Cast<AGameObject>(Actor);
+
+					if (pGameObject)
+					{
+						UGameAbilitySystemComponent* GAS = Cast<UGameAbilitySystemComponent>(pGameObject->GetAbilitySystemComponent());
+
+						if (GAS)
+							GAS->OnDamage.Broadcast(EventTag, OwningActor);
+					}
+				}
+			}
+		}
+	}
+
 }

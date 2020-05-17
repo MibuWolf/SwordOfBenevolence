@@ -12,6 +12,9 @@
 /**
  * 
  */
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnDamageDelegate, const FGameplayTag&, HitTag, AActor*, SourceActor);
+
 UCLASS()
 class SWORDOFBENEVOLENCE_API UGameAbilitySystemComponent : public UAbilitySystemComponent
 {
@@ -44,11 +47,19 @@ protected:
 	// 根据绑定的输入ID获取绑定在该输入上的能力个数（Combo个数）
 	int32		GetAbilityCountByInputID(EAbilityInputID InputID);
 
+public:
+
+	FOnDamageDelegate OnDamage;
+
 protected:
 
 	// 当前角色拥有的能力
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Ability)
 	TMap<int32, TSubclassOf<UGameAbility>> AllPossibleAbilities;
+
+	// 当前角色被击能力
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Ability)
+	TSubclassOf<UGameplayAbility>		BeHitAbility;
 	
 	// 当前连招段数
 	TMap<EAbilityInputID, int32> AbilityComboCount;			

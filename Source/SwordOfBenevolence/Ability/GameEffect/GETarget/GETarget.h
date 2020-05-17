@@ -67,3 +67,30 @@ protected:
 	TArray<TEnumAsByte<EObjectTypeQuery> > objectTypes;		// 查找对象类型
 
 };
+
+
+/** 矩形区域（默认在角色前方）*/
+UCLASS()
+class SWORDOFBENEVOLENCE_API UGETarget_Box : public UGETarget
+{
+	GENERATED_BODY()
+
+public:
+	// Constructor and overrides
+	UGETarget_Box() {}
+
+	/** Uses the passed in event data */
+	FGameplayAbilityTargetDataHandle GetTargets_Implementation(AActor* Owner);
+
+protected:
+
+	UPROPERTY(EditAnywhere, Category = Ability)
+	FVector			offset;		// 相对偏移值
+
+	UPROPERTY(EditAnywhere, Category = Ability)
+	FVector			boxSize;	// 矩形区域长宽高
+
+	UPROPERTY(EditAnywhere, Category = Ability)
+		TArray<TEnumAsByte<EObjectTypeQuery> > objectTypes;		// 查找对象类型
+
+};

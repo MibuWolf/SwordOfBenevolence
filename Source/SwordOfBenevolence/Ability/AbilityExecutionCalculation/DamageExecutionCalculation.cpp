@@ -2,6 +2,7 @@
 #include "../GameAbilitySystemComponent.h"
 #include "../Attribute/ObjectAttribute.h"
 #include "../../GamePlay/SOBGameInstance.h"
+#include "../../GameObject/GameObject.h"
 
 // 声明要捕获的属性，并定义我们如何从“源”和“目标”中捕获它们。
 struct SOBDamageStatics
@@ -166,5 +167,4 @@ void UDamageExecutionCalculation::Execute_Implementation(const FGameplayEffectCu
 	HP -= Damage;
 
 	OutExecutionOutput.AddOutputModifier(FGameplayModifierEvaluatedData(DamageStatics().HPProperty, EGameplayModOp::Additive, HP));
-
 }

@@ -53,6 +53,8 @@ protected:
 
 	void OnGameplayEvent(FGameplayTag EventTag, const FGameplayEventData* Payload);
 
+	void TriggerDamageEvent(FGameplayTag EventTag, FGameplayAbilityTargetDataHandle& TargetData);
+
 protected:
 
 	UPROPERTY(EditAnywhere, Category = Ability)

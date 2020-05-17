@@ -27,6 +27,13 @@ void UGameAbilitySystemComponent::AutoGiveAbilites()
 			GiveAbility(FGameplayAbilitySpec(Pair.Value, pAbility->GetSkillLevel(), int32(pAbility->GetAbilityInputID()), GetOwner()));
 		}
 	}
+
+	// ³õÊ¼»¯±»»÷
+	UGameplayAbility* pHitAbility = BeHitAbility.GetDefaultObject();
+	if (pHitAbility != nullptr)
+	{
+		GiveAbility(FGameplayAbilitySpec(BeHitAbility, 1, -1, GetOwner()));
+	}
 }
 
 
@@ -134,7 +141,7 @@ void UGameAbilitySystemComponent::AddSkill(int32 skillID)
 	if (!pSkillTable)
 		return;
 
-	FString skillPath = FString::Printf(TEXT("/Game/Characters/Blueprint/Ability/%s"), *(pSkillTable->SkillBlueprint));//"/Game/Characters/Blueprint/Ability/Warrior/NormalAttack/GA_NormalAttackA.GA_NormalAttackA_C";//pSkillTable->SkillBlueprint;  // TEXT("Blueprint'/Game/BluePrint/TestObj.TestObj'")
+	FString skillPath = FString::Printf(TEXT("/Game/Characters/%s"), *(pSkillTable->SkillBlueprint));//"/Game/Characters/Blueprint/Ability/Warrior/NormalAttack/GA_NormalAttackA.GA_NormalAttackA_C";//pSkillTable->SkillBlueprint;  // TEXT("Blueprint'/Game/BluePrint/TestObj.TestObj'")
 	UClass* loadObj = StaticLoadClass(UGameAbility::StaticClass(), NULL, *skillPath);
 	if (loadObj != nullptr)
 	{

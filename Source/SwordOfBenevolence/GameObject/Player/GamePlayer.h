@@ -48,8 +48,8 @@ public:
 
 protected:
 
-	// 基础属性更新
-	void			UpdateBasicAttribute();
+	// 初始化属性
+	void			InitPlayerAttribute();
 
 public:
 
