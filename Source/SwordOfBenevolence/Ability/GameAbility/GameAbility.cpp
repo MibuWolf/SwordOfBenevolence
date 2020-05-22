@@ -116,7 +116,7 @@ void UGameAbility::TriggerDamageEvent(FGameplayTag EventTag, FGameplayAbilityTar
 {
 	AActor* OwningActor = GetOwningActorFromActorInfo();
 
-	for (TSharedPtr<FGameplayAbilityTargetData> Data : TargetDataHandle.Data)
+	for (TSharedPtr<FGameplayAbilityTargetData>& Data : TargetDataHandle.Data)
 	{
 		if (Data.IsValid())
 		{
@@ -124,7 +124,7 @@ void UGameAbility::TriggerDamageEvent(FGameplayTag EventTag, FGameplayAbilityTar
 
 			if (TargetData)
 			{
-				for (TWeakObjectPtr<AActor> Actor : TargetData->GetActors())
+				for (auto& Actor : TargetData->GetActors())
 				{
 					AGameObject* pGameObject = Cast<AGameObject>(Actor);
 

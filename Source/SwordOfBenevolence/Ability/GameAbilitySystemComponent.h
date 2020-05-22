@@ -32,6 +32,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = Ability)
 	void		AddSkill(int32 skillID);
 
+	// 随机释放一个技能
+	UFUNCTION(BlueprintCallable, Category = Ability)
+	void		RandomActivateAbility();
 
 public:
 

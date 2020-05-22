@@ -47,5 +47,4 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Ability)
 	TSubclassOf<UGameplayEffect>	AutoRecover;		// 自动回复效果
 
-	UWaitForDamageEventTask* Task;
 };

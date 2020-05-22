@@ -203,6 +203,17 @@ FString		AGameObject::GetName()
 	return Name;
 }
 
+bool		AGameObject::IsDeath()
+{
+	if (Attribute == nullptr)
+		return false;
+
+	if (Attribute->GetHP() <= 0)
+		return true;
+
+	return false;
+}
+
 
 void AGameObject::OnAttributeChanged(const FOnAttributeChangeData & CallbackData)
 {

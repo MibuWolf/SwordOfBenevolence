@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "AttributeType.h"
+#include "../../DataTable/BaseAttributeTableData.h"
 #include "ObjectAttribute.generated.h"
 
 
@@ -104,6 +105,12 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category = "MAXEXP")
 	FGameplayAttributeData MAXEXP;
 	ATTRIBUTE_ACCESSORS(UObjectAttribute, MAXEXP)
+
+
+public:
+
+// 根据怪物ID初始化属性
+void	InitializeAttribute(FBaseAttributeTableData* BaseAttribute);
 
 protected:
 

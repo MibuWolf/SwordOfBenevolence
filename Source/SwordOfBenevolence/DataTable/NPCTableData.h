@@ -13,6 +13,12 @@ public:
 	FString Name;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = AttributeTableData)
+	int32 LV;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = AttributeTableData)
 	FString AttributeID;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = AttributeTableData)
+	FString Skills;
 
 };

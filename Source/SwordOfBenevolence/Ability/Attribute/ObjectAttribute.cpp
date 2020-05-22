@@ -55,6 +55,26 @@ void UObjectAttribute::PostGameplayEffectExecute(const FGameplayEffectModCallbac
 
 void UObjectAttribute::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
+
+}
+
+
+void UObjectAttribute::InitializeAttribute(FBaseAttributeTableData* BaseAttribute)
+{
+	if (BaseAttribute == nullptr)
+		return;
+
+	MaxHp = HP = BaseAttribute->MaxHp;
+	MaxMp = MP = BaseAttribute->MaxMp;
+	ATK = BaseAttribute->ATK;
+	DEF = BaseAttribute->DEF;
+	CRT = BaseAttribute->CRT;
+	CHD = BaseAttribute->CHD;
+	MGK = BaseAttribute->MGK;
+	RGS = BaseAttribute->RGS;
+	MCR = BaseAttribute->MCR;
+	MCD = BaseAttribute->MCD;
+	SPD = BaseAttribute->SPD;
 }
 
 //void UObjectAttribute::OnRep_HP()

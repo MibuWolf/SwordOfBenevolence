@@ -117,14 +117,11 @@ void AGamePlayerController::OnMoveForwardEvent(float Value)
 		player->SetDirctionY(Value);
 		if (Value != 0)
 		{
-			// 从当前控制器获取相机朝向角度
-			const FRotator Rotation = player->GetActorRotation();
-			// 在XZ平面方向
-			const FRotator YawRotation(0, Rotation.Yaw, 0);
+			FRotator controlRot = GetControlRotation();
+			controlRot.Roll = 0.0f;
+			controlRot.Pitch = 0.0f;
 
-			// 设置向相机前方移动
-			const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
-			player->AddMovementInput(Direction, Value);
+			player->AddMovementInput(FRotationMatrix(controlRot).GetScaledAxis(EAxis::X), Value);
 		}
 	}
 }
@@ -166,14 +163,11 @@ void AGamePlayerController::OnMoveRightEvent(float Value)
 			}
 			else
 			{
-				FRotator yaw = player->GetActorRotation();
-
-				if (keyDir.Y < 0.0f)
-					yaw.Yaw -= Value;
-				else
-					yaw.Yaw += Value;
-
-				player->SetActorRotation(yaw);
+				FRotator controlRot = GetControlRotation();
+				controlRot.Roll = 0.0f;
+				controlRot.Pitch = 0.0f;
+				
+				player->AddMovementInput(FRotationMatrix(controlRot).GetScaledAxis(EAxis::Y) , Value);
 			}
 		}
 	}

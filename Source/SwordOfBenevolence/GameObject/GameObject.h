@@ -81,6 +81,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = GameObject)
 	FString			GetName();
 
+	// 判定对象当前是否已经死亡
+	UFUNCTION(BlueprintCallable, Category = GameObject)
+	bool			IsDeath();
+
 	// 受击回调(受击逻辑在蓝图中具体实现)
 	UFUNCTION(BlueprintImplementableEvent)
 	void OnAttacked(const FGameplayTag& DamageTags);
@@ -143,7 +147,7 @@ protected:
 	FVector		Dirction;
 
 	/**属性*/
-	UObjectAttribute*	Attribute;
+	UObjectAttribute*	Attribute = nullptr;
 	
 	// 当前装备的所有装备
 	TMap<EEquipType, AGameEquip*> Equips;

@@ -14,11 +14,6 @@ UGameAbilitySystemComponent::UGameAbilitySystemComponent()
 
 void UGameAbilitySystemComponent::AutoGiveAbilites()
 {
-	AddSkill(10000);
-	AddSkill(10001);
-	AddSkill(10002);
-	AddSkill(10003);
-	AddSkill(10004);
 	for (const TPair<int32, TSubclassOf<UGameAbility>>& Pair : AllPossibleAbilities)
 	{
 		UGameAbility* pAbility = Cast<UGameAbility>(Pair.Value.GetDefaultObject());
@@ -158,6 +153,20 @@ void UGameAbilitySystemComponent::AddSkill(int32 skillID)
 			//UE_LOG(LogClass, Log, TEXT("Success"));
 		}
 	}
+}
+
+void UGameAbilitySystemComponent::RandomActivateAbility()
+{
+	TArray<int32> skillKeys;
+	int32 count = AllPossibleAbilities.GetKeys(skillKeys);
+
+	if (count < 1)
+		return;
+
+	int32 index = FMath::RandRange(0, count - 1);
+
+	
+	TryActivateAbilityByClass(AllPossibleAbilities[skillKeys[index]]);
 }
 
 int32 UGameAbilitySystemComponent::GetAbilityCountByInputID(EAbilityInputID InputID)
