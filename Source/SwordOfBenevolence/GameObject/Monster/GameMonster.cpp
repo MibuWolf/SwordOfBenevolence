@@ -12,7 +12,7 @@ void AGameMonster::BeginPlay()
 {
 	Super::BeginPlay();
 
-	InitMonsterAttribute();
+	//InitMonsterAttribute();
 }
 
 void AGameMonster::InitMonsterAttribute()
