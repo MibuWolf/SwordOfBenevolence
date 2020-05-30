@@ -83,19 +83,32 @@ void UDamageExecutionCalculation::Execute_Implementation(const FGameplayEffectCu
 	EvaluationParameters.TargetTags = TargetTags;
 
 	// 物理防御
-	float Def = FMath::Max<float>(ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatics().DEFDef, EvaluationParameters, Def), 0.0f);
+	float Def = 0.0f;
+	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatics().DEFDef, EvaluationParameters, Def);
+
 	// 魔法防御
-	float Rgs = FMath::Max<float>(ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatics().RGSDef, EvaluationParameters, Rgs), 0.0f);
+	float Rgs = 0.0f;
+	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatics().RGSDef, EvaluationParameters, Rgs);
+
 	// 物理攻击
-	float Atk = FMath::Max<float>(ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatics().ATKDef, EvaluationParameters, Atk), 0.0f);
+	float Atk = 0.0f;
+	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatics().ATKDef, EvaluationParameters, Atk);
+
 	// 物理暴击
-	float Crt = FMath::Max<float>(ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatics().CRTDef, EvaluationParameters, Crt), 0.0f);
+	float Crt = 0.0f;
+	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatics().CRTDef, EvaluationParameters, Crt);
+
 	// 魔法伤害
-	float Mgk = FMath::Max<float>(ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatics().MGKDef, EvaluationParameters, Mgk), 0.0f);
+	float Mgk = 0.0f;
+	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatics().MGKDef, EvaluationParameters, Mgk);
+
 	// 魔法暴击率
-	float Mcr = FMath::Max<float>(ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatics().MCRDef, EvaluationParameters, Mcr), 0.0f);
+	float Mcr = 0.0f;
+	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatics().MCRDef, EvaluationParameters, Mcr);
+
 	// 血量
-	float HP = FMath::Max<float>(ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatics().HPDef, EvaluationParameters, HP), 0.0f);
+	float HP = 0.0f;
+	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatics().HPDef, EvaluationParameters, HP);
 
 	float SkillATKMin = 0.0f, SkillATKMax = 0.0f, SkillCRTMin = 0.0f, SkillCRTMax = 0.0f, SkillCRTValue = 0.0f;
 	float SkillMGKMin = 0.0f, SkillMGKMax = 0.0f, SkillMCRMin = 0.0f, SkillMCRMax = 0.0f, SkillMCRValue = 0.0f;
@@ -166,5 +179,5 @@ void UDamageExecutionCalculation::Execute_Implementation(const FGameplayEffectCu
 	int Damage = AtkValue + MgkValue;
 	HP -= Damage;
 
-	OutExecutionOutput.AddOutputModifier(FGameplayModifierEvaluatedData(DamageStatics().HPProperty, EGameplayModOp::Additive, HP));
+	OutExecutionOutput.AddOutputModifier(FGameplayModifierEvaluatedData(DamageStatics().HPProperty, EGameplayModOp::Override, HP));
 }

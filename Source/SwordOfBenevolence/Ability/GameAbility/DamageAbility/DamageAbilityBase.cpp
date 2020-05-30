@@ -61,7 +61,7 @@ bool UDamageAbilityBase::CheckDamage()
 	FGameplayTagContainer tagContainer;
 	tagContainer.AddTag(FGameplayTag::RequestGameplayTag("Status.Dead"));
 
-	if (GameObject->GetAbilitySystemComponent()->HasAnyMatchingGameplayTags(tagContainer))
+	if (GameObject->IsDeath())
 		return false;
 
 	return true;

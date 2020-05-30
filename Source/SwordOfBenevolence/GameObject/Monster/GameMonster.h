@@ -19,14 +19,20 @@ public:
 	AGameMonster();
 
 protected:
+	
 	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-
-protected:
+	virtual void	BeginPlay() override;
 
 	// 初始化属性
 	void			InitMonsterAttribute();
 
+	// 定时延迟销毁回调
+	void			OnDelayDestory();
+
+public:
+
+
+	virtual void			OnDeath();
 
 protected:
 

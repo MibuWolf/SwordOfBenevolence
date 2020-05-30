@@ -62,19 +62,6 @@ void AGameObject::BeginPlay()
 		}
 	}
 
-	// HUD≥ı ºªØ
-	if (HeadHPBarClass)
-	{
-		APlayerController* PC = UGameplayStatics::GetPlayerController(GetWorld(), 0);
-		HeadHPBar = CreateWidget<UHeadHPBarWidgetBase>(PC, HeadHPBarClass, "HeadHPBarWidgetBase");
-
-		if (HeadHPBar)
-		{
-			HeadHPBar->Initialization(this);
-			HUDComponent->SetWidget(HeadHPBar);
-		}
-	}
-
 	SetLevel(Level);
 
 }
@@ -174,12 +161,6 @@ void AGameObject::InitAllAttributeChangedHandle()
 	AllAttributeChangeHandle.Add(EAttributeType::MAXEXP, AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Attribute->GetMAXEXPAttribute()).AddUObject(this, &AGameObject::OnAttributeChanged));
 }
 
-void AGameObject::OnGameplayTagCallback(const FGameplayTag InTag, int32 NewCount)
-{
-	OnAttacked(InTag);
-}
-
-
 void		AGameObject::SetLevel(int32 level)
 {
 	Level = level;
@@ -218,4 +199,14 @@ bool		AGameObject::IsDeath()
 void AGameObject::OnAttributeChanged(const FOnAttributeChangeData & CallbackData)
 {
 	AttributeChangedHandle.Broadcast(CallbackData.Attribute, CallbackData.OldValue, CallbackData.NewValue);
+
+	if (CallbackData.Attribute == Attribute->GetHPAttribute() && CallbackData.NewValue <= 0.0f)
+	{
+		OnDeath();
+	}
+
+}
+
+void AGameObject::OnDeath()
+{
 }

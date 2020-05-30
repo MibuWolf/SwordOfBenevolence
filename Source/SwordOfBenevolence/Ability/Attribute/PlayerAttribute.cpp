@@ -66,10 +66,12 @@ void	UPlayerAttribute::InitializeByPlayerLevel(int32 Level)
 
 void UPlayerAttribute::PreAttributeChange(const FGameplayAttribute & Attribute, float & NewValue)
 {
+	Super::PreAttributeChange(Attribute, NewValue);
 }
 
 void UPlayerAttribute::PostGameplayEffectExecute(const FGameplayEffectModCallbackData & Data)
 {
+	Super::PostGameplayEffectExecute(Data);
 }
 
 void UPlayerAttribute::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const

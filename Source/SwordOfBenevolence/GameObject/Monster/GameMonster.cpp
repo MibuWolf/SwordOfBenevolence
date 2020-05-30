@@ -12,7 +12,7 @@ void AGameMonster::BeginPlay()
 {
 	Super::BeginPlay();
 
-	//InitMonsterAttribute();
+	InitMonsterAttribute();
 }
 
 void AGameMonster::InitMonsterAttribute()
@@ -37,4 +37,20 @@ void AGameMonster::InitMonsterAttribute()
 		if (BaseAttribute != nullptr)
 			Attribute->InitializeAttribute(BaseAttribute);
 	}
+}
+
+void AGameMonster::OnDelayDestory()
+{
+	Destroy();
+}
+
+void AGameMonster::OnDeath()
+{
+	UWorld* World = GetWorld();
+
+	if (World == nullptr)
+		return;
+
+	FTimerHandle TimerHandle;
+	World->GetTimerManager().SetTimer(TimerHandle, this, &AGameMonster::OnDelayDestory, 3.0f, false);
 }

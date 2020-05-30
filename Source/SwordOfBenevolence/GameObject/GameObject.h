@@ -46,6 +46,9 @@ public:
 
 	void OnAttributeChanged(const FOnAttributeChangeData & CallbackData);
 
+	// 死亡回调(死亡逻辑逻辑在蓝图中具体实现)
+	virtual void OnDeath();
+
 public:
 
 	// 获取动作表现朝向
@@ -85,16 +88,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = GameObject)
 	bool			IsDeath();
 
-	// 受击回调(受击逻辑在蓝图中具体实现)
-	UFUNCTION(BlueprintImplementableEvent)
-	void OnAttacked(const FGameplayTag& DamageTags);
-
 protected:
 
 	void InitAllAttributeChangedHandle();
-
-	void OnGameplayTagCallback(const FGameplayTag InTag, int32 NewCount);
-
 
 public:
 
@@ -115,14 +111,6 @@ protected:
 	/**头顶及飘血等HUD显示组件*/
 	UPROPERTY(VisibleAnywhere)
 	class UWidgetComponent* HUDComponent;
-
-	/**头顶HUD类*/
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "GameObject|HUD")
-	TSubclassOf<UHeadHPBarWidgetBase> HeadHPBarClass;
-
-	/**头顶HUD*/
-	UPROPERTY()
-	UHeadHPBarWidgetBase* HeadHPBar;
 
 	/** 能力系统 */
 	UPROPERTY(VisibleAnywhere)
